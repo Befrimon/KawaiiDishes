@@ -14,7 +14,7 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "kawaiidishes:kawaiidishes/coffee_press",
+  "parent": "minecraft:root",
   "criteria": {
     "tick": {
       "trigger": "minecraft:inventory_changed",

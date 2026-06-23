@@ -67,8 +67,6 @@ public class BlockRegister {
     public static final DeferredBlock<StoolBlock> whiteStool = BLOCKS.register("white_stool", StoolBlock::new);
     public static final DeferredBlock<StoolBlock> yellowStool = BLOCKS.register("yellow_stool", StoolBlock::new);
 
-    public static final DeferredBlock<CoffeePressBlock> coffeePress = BLOCKS.register("coffee_press", CoffeePressBlock::new);
-
     public static final DeferredBlock<CoffeeMachineBlock> coffeeMachine = BLOCKS.register("coffee_machine", CoffeeMachineBlock::new);
 
     public static final DeferredBlock<IceCreamMachineBlock> iceCreamMachine = BLOCKS.register("ice_cream_machine", IceCreamMachineBlock::new);

@@ -7,8 +7,6 @@
   "advancement.kawaiidishes.coffee_fruit_got.desc": "获得一些咖啡果",
   "advancement.kawaiidishes.coffee_machine": "我要一杯意式浓缩咖啡！！",
   "advancement.kawaiidishes.coffee_machine.desc": "获得一台咖啡机",
-  "advancement.kawaiidishes.coffee_press": "古法",
-  "advancement.kawaiidishes.coffee_press.desc": "获得一个咖啡法压壶",
   "advancement.kawaiidishes.coffee": "既漂亮又温暖",
   "advancement.kawaiidishes.coffee.desc": "咖啡！",
   "advancement.kawaiidishes.cookie": "拿起曲奇",
@@ -39,7 +37,6 @@
   "block.kawaiidishes.coffee_ice_cream": "咖啡冰淇淋",
   "block.kawaiidishes.coffee_machine": "咖啡机",
   "block.kawaiidishes.coffee_milkshake": "咖啡奶昔",
-  "block.kawaiidishes.coffee_press": "咖啡法压壶",
   "block.kawaiidishes.cream_ice_cream": "奶油冰淇淋",
   "block.kawaiidishes.cream_milkshake": "奶油奶昔",
   "block.kawaiidishes.cyan_stool": "青色凳子",
@@ -656,8 +653,7 @@
   "itemGroup.kawaiidishes.foods": "卡哇伊|食物",
   "jei.kawaiidishes.recipe.blending": "搅拌",
   "jei.kawaiidishes.recipe.coffee_machining": "咖啡机",
-  "jei.kawaiidishes.recipe.coffee_pressing": "咖啡法压",
   "jei.kawaiidishes.recipe.ice_cream_making": "冰淇淋制作",
   "key.category.kawaiidishes.kawaiidishes": "卡哇伊菜肴",
   "key.kawaiidishes.tail_wag": "摇晃尾巴"
-  }
+}

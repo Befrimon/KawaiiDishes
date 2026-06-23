@@ -1,7 +1,6 @@
 package com.hakimen.kawaiidishes;
 
 import com.hakimen.kawaiidishes.client.block_entity_renderers.CoffeeMachineRenderer;
-import com.hakimen.kawaiidishes.client.block_entity_renderers.CoffeePressRenderer;
 import com.hakimen.kawaiidishes.client.block_entity_renderers.IceCreamMachineRenderer;
 import com.hakimen.kawaiidishes.client.entity.SeatRenderer;
 import com.hakimen.kawaiidishes.registry.BlockEntityRegister;
@@ -18,7 +17,6 @@ public class KawaiiDishesClient {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(BlockEntityRegister.coffeePress.get(), CoffeePressRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegister.coffeeMachine.get(), CoffeeMachineRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegister.iceCreamMachine.get(), IceCreamMachineRenderer::new);
 

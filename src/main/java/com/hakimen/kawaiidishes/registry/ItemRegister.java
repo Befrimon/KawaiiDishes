@@ -39,7 +39,6 @@ public class ItemRegister {
     public static final DeferredItem<Item> glassCup = ITEMS.register("glass_cup", () -> new BlockItem(BlockRegister.glassCup.get(), new Item.Properties()));
     public static final DeferredItem<Item> milkshakeCup = ITEMS.register("milkshake_cup", () -> new BlockItem(BlockRegister.milkshakeCup.get(), new Item.Properties()));
 
-    public static final DeferredItem<Item> coffeePress = ITEMS.register("coffee_press", () -> new BlockItem(BlockRegister.coffeePress.get(), new Item.Properties()));
     public static final DeferredItem<Item> coffeeMachine = ITEMS.register("coffee_machine", () -> new BlockItem(BlockRegister.coffeeMachine.get(), new Item.Properties()));
     public static final DeferredItem<Item> blender = ITEMS.register("blender", () -> new BlockItem(BlockRegister.blender.get(), new Item.Properties()));
     public static final DeferredItem<Item> iceCreamMachine = ITEMS.register("ice_cream_machine", () -> new BlockItem(BlockRegister.iceCreamMachine.get(), new Item.Properties()));
@@ -117,29 +116,29 @@ public class ItemRegister {
     public static final DeferredItem<Item> darkChocolateBar = ITEMS.register("dark_chocolate_bar", () -> new Item(new Item.Properties().food(chocolate)));
     public static final DeferredItem<Item> milkChocolateBar = ITEMS.register("milk_chocolate_bar", () -> new Item(new Item.Properties().food(chocolate)));
 
-    public static final DeferredItem<PlaceableFoodItem> expressoCoffee = ITEMS.register("expresso_coffee", () -> new PlaceableFoodItem(BlockRegister.expressoMug.get(), 6, 1.2f, ItemRegister.mug.get()));
-    public static final DeferredItem<PlaceableFoodItem> americanCoffee = ITEMS.register("american_coffee", () -> new PlaceableFoodItem(BlockRegister.americanMug.get(), 6, 1.2f, ItemRegister.mug.get()));
-    public static final DeferredItem<PlaceableFoodItem> latteCoffee = ITEMS.register("latte_coffee", () -> new PlaceableFoodItem(BlockRegister.latteMug.get(), 6, 1.2f, ItemRegister.mug.get()));
-    public static final DeferredItem<PlaceableFoodItem> mochaCoffee = ITEMS.register("mocha_coffee", () -> new PlaceableFoodItem(BlockRegister.mochaMug.get(), 6, 1.2f, ItemRegister.mug.get()));
-    public static final DeferredItem<PlaceableFoodItem> macchiatoCoffee = ITEMS.register("macchiato_coffee", () -> new PlaceableFoodItem(BlockRegister.macchiatoMug.get(), 6, 1.2f, ItemRegister.mug.get()));
-    public static final DeferredItem<PlaceableFoodItem> doppioCoffee = ITEMS.register("doppio_coffee", () -> new PlaceableFoodItem(BlockRegister.doppioMug.get(), 6, 1.2f, ItemRegister.mug.get()));
-    public static final DeferredItem<PlaceableFoodItem> cappuccinoCoffee = ITEMS.register("cappuccino_coffee", () -> new PlaceableFoodItem(BlockRegister.cappuccinoMug.get(), 6, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> expressoCoffee = ITEMS.register("expresso_coffee", () -> new PlaceableFoodItem(BlockRegister.expressoMug.get(), 3, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> americanCoffee = ITEMS.register("american_coffee", () -> new PlaceableFoodItem(BlockRegister.americanMug.get(), 3, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> latteCoffee = ITEMS.register("latte_coffee", () -> new PlaceableFoodItem(BlockRegister.latteMug.get(), 3, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> mochaCoffee = ITEMS.register("mocha_coffee", () -> new PlaceableFoodItem(BlockRegister.mochaMug.get(), 3, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> macchiatoCoffee = ITEMS.register("macchiato_coffee", () -> new PlaceableFoodItem(BlockRegister.macchiatoMug.get(), 3, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> doppioCoffee = ITEMS.register("doppio_coffee", () -> new PlaceableFoodItem(BlockRegister.doppioMug.get(), 3, 1.2f, ItemRegister.mug.get()));
+    public static final DeferredItem<PlaceableFoodItem> cappuccinoCoffee = ITEMS.register("cappuccino_coffee", () -> new PlaceableFoodItem(BlockRegister.cappuccinoMug.get(), 3, 1.2f, ItemRegister.mug.get()));
 
-    public static final DeferredItem<PlaceableFoodItem> sweetBerryIceCream = ITEMS.register("sweet_berry_ice_cream", () -> new PlaceableFoodItem(BlockRegister.sweetBerryIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> napolitanoIceCream = ITEMS.register("napolitano_ice_cream", () -> new PlaceableFoodItem(BlockRegister.napolitanoIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> creamIceCream = ITEMS.register("cream_ice_cream", () -> new PlaceableFoodItem(BlockRegister.creamIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> chocolateIceCream = ITEMS.register("chocolate_ice_cream", () -> new PlaceableFoodItem(BlockRegister.chocolateIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> coffeeIceCream = ITEMS.register("coffee_ice_cream", () -> new PlaceableFoodItem(BlockRegister.coffeeIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> mochaIceCream = ITEMS.register("mocha_ice_cream", () -> new PlaceableFoodItem(BlockRegister.mochaIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> glowBerryIceCream = ITEMS.register("glow_berry_ice_cream", () -> new PlaceableFoodItem(BlockRegister.glowBerryIceCream.get(), 6, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> sweetBerryIceCream = ITEMS.register("sweet_berry_ice_cream", () -> new PlaceableFoodItem(BlockRegister.sweetBerryIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> napolitanoIceCream = ITEMS.register("napolitano_ice_cream", () -> new PlaceableFoodItem(BlockRegister.napolitanoIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> creamIceCream = ITEMS.register("cream_ice_cream", () -> new PlaceableFoodItem(BlockRegister.creamIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> chocolateIceCream = ITEMS.register("chocolate_ice_cream", () -> new PlaceableFoodItem(BlockRegister.chocolateIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> coffeeIceCream = ITEMS.register("coffee_ice_cream", () -> new PlaceableFoodItem(BlockRegister.coffeeIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> mochaIceCream = ITEMS.register("mocha_ice_cream", () -> new PlaceableFoodItem(BlockRegister.mochaIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> glowBerryIceCream = ITEMS.register("glow_berry_ice_cream", () -> new PlaceableFoodItem(BlockRegister.glowBerryIceCream.get(), 3, 1.2f, ItemRegister.glassCup.get()));
 
-    public static final DeferredItem<PlaceableFoodItem> sweetBerryMilkshake = ITEMS.register("sweet_berry_milkshake", () -> new PlaceableFoodItem(BlockRegister.sweetBerryMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> chocolateMilkshake = ITEMS.register("chocolate_milkshake", () -> new PlaceableFoodItem(BlockRegister.chocolateMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> creamMilkshake = ITEMS.register("cream_milkshake", () -> new PlaceableFoodItem(BlockRegister.creamMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> napolitanoMilkshake = ITEMS.register("napolitano_milkshake", () -> new PlaceableFoodItem(BlockRegister.napolitanoMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> coffeeMilkshake = ITEMS.register("coffee_milkshake", () -> new PlaceableFoodItem(BlockRegister.coffeeMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> mochaMilkshake = ITEMS.register("mocha_milkshake", () -> new PlaceableFoodItem(BlockRegister.mochaMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
-    public static final DeferredItem<PlaceableFoodItem> glowBerryMilkshake = ITEMS.register("glow_berry_milkshake", () -> new PlaceableFoodItem(BlockRegister.glowBerryMilkshake.get(), 6, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> sweetBerryMilkshake = ITEMS.register("sweet_berry_milkshake", () -> new PlaceableFoodItem(BlockRegister.sweetBerryMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> chocolateMilkshake = ITEMS.register("chocolate_milkshake", () -> new PlaceableFoodItem(BlockRegister.chocolateMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> creamMilkshake = ITEMS.register("cream_milkshake", () -> new PlaceableFoodItem(BlockRegister.creamMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> napolitanoMilkshake = ITEMS.register("napolitano_milkshake", () -> new PlaceableFoodItem(BlockRegister.napolitanoMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> coffeeMilkshake = ITEMS.register("coffee_milkshake", () -> new PlaceableFoodItem(BlockRegister.coffeeMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> mochaMilkshake = ITEMS.register("mocha_milkshake", () -> new PlaceableFoodItem(BlockRegister.mochaMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
+    public static final DeferredItem<PlaceableFoodItem> glowBerryMilkshake = ITEMS.register("glow_berry_milkshake", () -> new PlaceableFoodItem(BlockRegister.glowBerryMilkshake.get(), 3, 1.2f, ItemRegister.milkshakeCup.get()));
 
     public static final DeferredItem<Item> condensedMilk = ITEMS.register("condensed_milk", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> brigadeiroMix = ITEMS.register("brigadeiro_mix", () -> new Item(new Item.Properties()));
@@ -346,7 +345,6 @@ public class ItemRegister {
                 entries.accept(ItemRegister.glassCup.get());
                 entries.accept(ItemRegister.milkshakeCup.get());
                 entries.accept(ItemRegister.coffeeMachine.get());
-                entries.accept(ItemRegister.coffeePress.get());
                 entries.accept(ItemRegister.blender.get());
                 entries.accept(ItemRegister.iceCreamMachine.get());
             })

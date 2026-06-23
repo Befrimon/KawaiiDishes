@@ -8,9 +8,6 @@
     "i": {
       "item": "minecraft:iron_ingot"
     },
-    "p": {
-      "item": "kawaiidishes:coffee_press"
-    },
     "r": {
       "item": "minecraft:redstone"
     },
@@ -20,7 +17,7 @@
   },
   "pattern": [
     "xxx",
-    ".pi",
+    ". i",
     "iri"
   ],
   "result": {

@@ -146,7 +146,6 @@ public class LangSupplier extends LanguageProvider {
 
         add(ItemRegister.iceCreamMachine.get(), "Ice Cream Maker");
         add(BlockRegister.coffeeMachine.get(), "Coffee Machine");
-        add(BlockRegister.coffeePress.get(), "Coffee Press");
 
         add(ItemRegister.mug.get(), "Mug");
         add(ItemRegister.glassCup.get(), "Glass Cup");

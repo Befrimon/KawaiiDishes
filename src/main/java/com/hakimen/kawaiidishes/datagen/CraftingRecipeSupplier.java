@@ -3,7 +3,6 @@ package com.hakimen.kawaiidishes.datagen;
 import com.hakimen.kawaiidishes.KawaiiDishes;
 import com.hakimen.kawaiidishes.datagen.recipebuilder.BlenderRecipeBuilder;
 import com.hakimen.kawaiidishes.datagen.recipebuilder.CoffeeMachineRecipeBuilder;
-import com.hakimen.kawaiidishes.datagen.recipebuilder.CoffeePressRecipeBuilder;
 import com.hakimen.kawaiidishes.datagen.recipebuilder.IceCreamMachineRecipeBuilder;
 import com.hakimen.kawaiidishes.registry.EffectRegister;
 import com.hakimen.kawaiidishes.registry.ItemRegister;
@@ -69,7 +68,6 @@ public class CraftingRecipeSupplier extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .define('.', Items.IRON_NUGGET)
                 .define('i', Items.IRON_INGOT)
-                .define('p', ItemRegister.coffeePress.get())
                 .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .unlockedBy(getHasName(Items.IRON_NUGGET), has(Items.IRON_NUGGET))
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
@@ -87,16 +85,6 @@ public class CraftingRecipeSupplier extends RecipeProvider {
                 .unlockedBy(getHasName(Items.IRON_NUGGET), has(Items.IRON_NUGGET))
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(pFinishedRecipeConsumer);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,ItemRegister.coffeePress.get())
-                .pattern("xxx")
-                .pattern("g g")
-                .pattern("xxx")
-                .define('g',Tags.Items.GLASS_PANES)
-                .define('x',Items.IRON_INGOT)
-                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
-                .save(pFinishedRecipeConsumer);
-
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,ItemRegister.blender.get())
                 .pattern("xxx")
@@ -735,67 +723,6 @@ public class CraftingRecipeSupplier extends RecipeProvider {
                 null,
                 null);
 
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.coffeePowder.get(),
-                Items.WATER_BUCKET,
-                ItemRegister.americanCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.coffeePowder.get(),
-                ItemRegister.americanCoffee.get(),
-                ItemRegister.expressoCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.coffeePowder.get(),
-                ItemRegister.coffeePowder.get(),
-                Items.WATER_BUCKET,
-                ItemRegister.doppioCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.doppioCoffee.get(),
-                Items.MILK_BUCKET,
-                Items.SUGAR,
-                ItemRegister.macchiatoCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.expressoCoffee.get(),
-                Items.MILK_BUCKET,
-                ItemRegister.cocoaPowder.get(),
-                ItemRegister.mochaCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.expressoCoffee.get(),
-                Items.MILK_BUCKET,
-                Items.SUGAR,
-                ItemRegister.latteCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
-
-        pressRecipe(pFinishedRecipeConsumer,
-                ItemRegister.americanCoffee.get(),
-                Items.MILK_BUCKET,
-                ItemRegister.cocoaPowder.get(),
-                ItemRegister.cappuccinoCoffee.get().getDefaultInstance(),
-                null,
-                null
-        );
     }
 
     public void machineRecipe(RecipeOutput consumer, Item item, Item item1, Item item2, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
@@ -848,42 +775,6 @@ public class CraftingRecipeSupplier extends RecipeProvider {
     }
 
 
-    public void pressRecipe(RecipeOutput consumer, Item item, Item item1, Item item2, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
-        CoffeePressRecipeBuilder builder = new CoffeePressRecipeBuilder(
-                item,
-                item1,
-                item2,
-                result,
-                mainEffect,
-                secondaryEffect
-        );
-        builder.unlockedBy(getHasName(item), has(item));
-        builder.save(consumer);
-    }
-
-    public void pressRecipe(RecipeOutput consumer, Item item, Item item1, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
-        CoffeePressRecipeBuilder builder = new CoffeePressRecipeBuilder(
-                item,
-                item1,
-                result,
-                mainEffect,
-                secondaryEffect
-        );
-        builder.unlockedBy(getHasName(item), has(item));
-        builder.save(consumer);
-    }
-
-    public void pressRecipe(RecipeOutput consumer, Item item, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
-        CoffeePressRecipeBuilder builder = new CoffeePressRecipeBuilder(
-                item,
-                result,
-                mainEffect,
-                secondaryEffect
-        );
-        builder.unlockedBy(getHasName(item), has(item));
-
-        builder.save(consumer);
-    }
     public void maidOutfitUncrafts(RecipeOutput consumer, String color) {
         for (var i : ItemRegister.ITEMS.getEntries().stream().toList()) {
             var path = BuiltInRegistries.ITEM.getKey(i.get()).toString().replaceAll(KawaiiDishes.modId+":","");

@@ -32,7 +32,6 @@ import java.util.List;
 public class JEIIntegration implements IModPlugin {
 
     public static RecipeType<CoffeeMachineRecipe> coffeeMachining = RecipeType.create(KawaiiDishes.modId, "coffee_machining", CoffeeMachineRecipe.class);
-    public static RecipeType<CoffeePressRecipe> coffeePressing = RecipeType.create(KawaiiDishes.modId, "coffee_pressing", CoffeePressRecipe.class);
     public static RecipeType<IceCreamMachineRecipe> iceCreamMaking = RecipeType.create(KawaiiDishes.modId, "ice_cream_making", IceCreamMachineRecipe.class);
     public static RecipeType<BlenderRecipe> blending = RecipeType.create(KawaiiDishes.modId, "blending", BlenderRecipe.class);
 
@@ -46,8 +45,6 @@ public class JEIIntegration implements IModPlugin {
         registration.addRecipeCategories(new
                 CoffeeMachineRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
-                CoffeePressRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new
                 IceCreamMachineRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 BlendingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -55,7 +52,6 @@ public class JEIIntegration implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ItemRegister.coffeePress.get().getDefaultInstance(), coffeePressing);
         registration.addRecipeCatalyst(ItemRegister.coffeeMachine.get().getDefaultInstance(), coffeeMachining);
         registration.addRecipeCatalyst(ItemRegister.iceCreamMachine.get().getDefaultInstance(), iceCreamMaking);
         registration.addRecipeCatalyst(ItemRegister.blender.get().getDefaultInstance(), blending);
@@ -71,20 +67,18 @@ public class JEIIntegration implements IModPlugin {
                 : Minecraft.getInstance().level.getRecipeManager();
 
         List<CoffeeMachineRecipe> coffeeMachineRecipes = new ArrayList<>(rm.getAllRecipesFor(CoffeeMachineRecipe.Type.INSTANCE).stream().map(holder -> holder.value()).toList());
-        List<CoffeePressRecipe> coffeePressRecipes = new ArrayList<>(rm.getAllRecipesFor(CoffeePressRecipe.Type.INSTANCE).stream().map(holder -> holder.value()).toList());
         List<IceCreamMachineRecipe> iceCreamMachineRecipes = new ArrayList<>(rm.getAllRecipesFor(IceCreamMachineRecipe.Type.INSTANCE).stream().map(holder -> holder.value()).toList());
         List<BlenderRecipe> blenderRecipes = new ArrayList<>(rm.getAllRecipesFor(BlenderRecipe.Type.INSTANCE).stream().map(holder -> holder.value()).toList());
 
-        if (coffeeMachineRecipes.isEmpty() && coffeePressRecipes.isEmpty()
+        if (coffeeMachineRecipes.isEmpty()
                 && iceCreamMachineRecipes.isEmpty() && blenderRecipes.isEmpty()) {
             List<Recipe<?>> vanillaRecipes = new ArrayList<>();
-            loadRecipesFromFileSystem(coffeeMachineRecipes, coffeePressRecipes, iceCreamMachineRecipes, blenderRecipes, vanillaRecipes);
+            loadRecipesFromFileSystem(coffeeMachineRecipes, iceCreamMachineRecipes, blenderRecipes, vanillaRecipes);
 
             registerVanillaRecipes(registration, vanillaRecipes);
         }
 
         registration.addRecipes(coffeeMachining, coffeeMachineRecipes);
-        registration.addRecipes(coffeePressing, coffeePressRecipes);
         registration.addRecipes(iceCreamMaking, iceCreamMachineRecipes);
         registration.addRecipes(blending, blenderRecipes);
     }
@@ -129,7 +123,6 @@ public class JEIIntegration implements IModPlugin {
 
     private void loadRecipesFromFileSystem(
             List<CoffeeMachineRecipe> coffeeMachineRecipes,
-            List<CoffeePressRecipe> coffeePressRecipes,
             List<IceCreamMachineRecipe> iceCreamMachineRecipes,
             List<BlenderRecipe> blenderRecipes,
             List<Recipe<?>> vanillaRecipes) {
@@ -141,7 +134,6 @@ public class JEIIntegration implements IModPlugin {
         if (FMLLoader.isProduction()) {
             scanPaths.add(FMLPaths.GAMEDIR.get());
         } else {
-            scanPaths.add(FMLPaths.GAMEDIR.get().resolve("..").resolve("build").resolve("resources").resolve("main"));
             scanPaths.add(FMLPaths.GAMEDIR.get().resolve("..").resolve("src").resolve("main").resolve("resources"));
             scanPaths.add(FMLPaths.GAMEDIR.get().resolve("..").resolve("src").resolve("generated").resolve("resources"));
         }
@@ -162,7 +154,6 @@ public class JEIIntegration implements IModPlugin {
                                 .ifPresent(opt -> opt.ifPresent(wc -> {
                                     Recipe<?> recipe = wc.carrier();
                                     if (recipe instanceof CoffeeMachineRecipe r) coffeeMachineRecipes.add(r);
-                                    else if (recipe instanceof CoffeePressRecipe r) coffeePressRecipes.add(r);
                                     else if (recipe instanceof IceCreamMachineRecipe r) iceCreamMachineRecipes.add(r);
                                     else if (recipe instanceof BlenderRecipe r) blenderRecipes.add(r);
                                     else vanillaRecipes.add(recipe);

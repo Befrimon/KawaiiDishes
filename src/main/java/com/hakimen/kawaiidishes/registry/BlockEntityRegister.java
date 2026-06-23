@@ -13,8 +13,6 @@ import static com.hakimen.kawaiidishes.KawaiiDishes.modId;
 public class BlockEntityRegister {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, modId);
 
-    public static final Supplier<BlockEntityType<CoffeePressBlockEntity>> coffeePress = BLOCK_ENTITIES.register("coffee_press_entity",
-            () -> BlockEntityType.Builder.of(CoffeePressBlockEntity::new, BlockRegister.coffeePress.get()).build(null));
     public static final Supplier<BlockEntityType<CoffeeMachineBlockEntity>> coffeeMachine = BLOCK_ENTITIES.register("coffee_machine_entity",
             () -> BlockEntityType.Builder.of(CoffeeMachineBlockEntity::new, BlockRegister.coffeeMachine.get()).build(null));
 
@@ -41,7 +39,13 @@ public class BlockEntityRegister {
                     BlockRegister.mochaIceCream.get(),
                     BlockRegister.coffeeIceCream.get(),
                     BlockRegister.glowBerryIceCream.get(),
-                    BlockRegister.sweetBerryMilkshake.get()
+                    BlockRegister.sweetBerryMilkshake.get(),
+                    BlockRegister.chocolateMilkshake.get(),
+                    BlockRegister.creamMilkshake.get(),
+                    BlockRegister.napolitanoMilkshake.get(),
+                    BlockRegister.coffeeMilkshake.get(),
+                    BlockRegister.mochaMilkshake.get(),
+                    BlockRegister.glowBerryMilkshake.get()
             ).build(null));
 
     public static void register(IEventBus bus) {

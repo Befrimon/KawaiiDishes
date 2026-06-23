@@ -17,9 +17,6 @@ public class RecipeRegister {
     public static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, KawaiiDishes.modId);
 
-    public static final Supplier<RecipeSerializer<CoffeePressRecipe>> CoffeePressRecipeSerializer =
-            SERIALIZERS.register("coffee_pressing", () -> CoffeePressRecipe.Serializer.INSTANCE);
-
     public static final Supplier<RecipeSerializer<CoffeeMachineRecipe>> CoffeeMachineRecipeSerializer =
             SERIALIZERS.register("coffee_machining", () -> CoffeeMachineRecipe.Serializer.INSTANCE);
 
@@ -28,9 +25,6 @@ public class RecipeRegister {
 
     public static final Supplier<RecipeSerializer<BlenderRecipe>> BlendingRecipe =
             SERIALIZERS.register("blending", () -> BlenderRecipe.Serializer.INSTANCE);
-
-    public static final Supplier<RecipeType<CoffeePressRecipe>> CoffeePressingType =
-            TYPES.register("coffee_pressing", () -> CoffeePressRecipe.Type.INSTANCE);
 
     public static final Supplier<RecipeType<CoffeeMachineRecipe>> CoffeeMachiningType =
             TYPES.register("coffee_machining", () -> CoffeeMachineRecipe.Type.INSTANCE);
