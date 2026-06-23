@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:white_wool"
+    },
+    "s": {
+      "tag": "c:strings"
+    },
+    "x": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    " #x",
+    "s##",
+    "ss "
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:white_fox_tail"
+  }
+}

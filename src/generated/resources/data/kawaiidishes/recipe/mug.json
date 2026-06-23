@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "x": {
+      "item": "minecraft:brick"
+    }
+  },
+  "pattern": [
+    "x x",
+    "xxx"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:mug"
+  }
+}

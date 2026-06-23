@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_red_headband": {
+      "conditions": {
+        "items": [
+          {
+            "items": "kawaiidishes:red_headband"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "kawaiidishes:red_headband_cat_ears_white"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_red_headband"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "kawaiidishes:red_headband_cat_ears_white"
+    ]
+  }
+}

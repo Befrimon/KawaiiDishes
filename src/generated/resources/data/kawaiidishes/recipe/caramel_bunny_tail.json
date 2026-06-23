@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:yellow_wool"
+    },
+    "s": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "   ",
+    "s##",
+    "ss "
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:caramel_bunny_tail"
+  }
+}

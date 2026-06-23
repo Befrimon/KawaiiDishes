@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:lime_wool"
+    },
+    "@": {
+      "item": "minecraft:white_wool"
+    },
+    "s": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "# #",
+    "s#s",
+    "@@@"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:lime_maid_dress"
+  }
+}

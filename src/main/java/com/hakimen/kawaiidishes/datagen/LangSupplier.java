@@ -149,7 +149,6 @@ public class LangSupplier extends LanguageProvider {
 
         add(ItemRegister.mug.get(), "Mug");
         add(ItemRegister.glassCup.get(), "Glass Cup");
-        add(ItemRegister.milkshakeCup.get(), "Milkshake Cup");
 
         add(ItemRegister.caramelCatTail.get(), "Caramel Cat Tail");
         add(ItemRegister.whiteCatTail.get(), "White Cat Tail");

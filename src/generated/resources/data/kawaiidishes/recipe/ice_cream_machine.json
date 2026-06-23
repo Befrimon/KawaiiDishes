@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    ".": {
+      "item": "minecraft:iron_nugget"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "x": {
+      "tag": "c:glass_blocks"
+    }
+  },
+  "pattern": [
+    "xxx",
+    "i.i",
+    "iri"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:ice_cream_machine"
+  }
+}

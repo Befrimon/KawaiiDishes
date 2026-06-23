@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "kawaiidishes:magenta_maid_dress_cat_tail_black"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:black_cat_tail"
+  }
+}

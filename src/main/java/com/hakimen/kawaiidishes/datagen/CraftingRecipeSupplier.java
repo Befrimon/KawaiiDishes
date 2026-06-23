@@ -62,7 +62,7 @@ public class CraftingRecipeSupplier extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,ItemRegister.coffeeMachine.get())
                 .pattern("xxx")
-                .pattern(".pi")
+                .pattern(". i")
                 .pattern("iri")
                 .define('x', Items.STONE_SLAB)
                 .define('r', Items.REDSTONE)
@@ -334,14 +334,14 @@ public class CraftingRecipeSupplier extends RecipeProvider {
             ingredient,result,ItemStack.EMPTY,tick,count
         );
         builder.unlockedBy(getHasName(ingredient), has(ingredient));
-        builder.save(consumer);
+        builder.save(consumer, ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, getHasName(result.getItem()) + "_from_blending"));
     }
     public void blending(RecipeOutput consumer,Item ingredient,Item ingredient2, ItemStack result,int tick,int count) {
         BlenderRecipeBuilder builder = new BlenderRecipeBuilder(
                 ingredient,ingredient2,result,ItemStack.EMPTY,tick,count
         );
         builder.unlockedBy(getHasName(ingredient), has(ingredient));
-        builder.save(consumer);
+        builder.save(consumer, ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, getHasName(result.getItem()) + "_from_blending"));
     }
     public void blending(RecipeOutput consumer,Item ingredient,Item ingredient2,ItemStack result,ItemStack onOut,
                          MobEffectInstance mainEffect,MobEffectInstance secondaryEffect,int tick,int count) {
@@ -349,7 +349,7 @@ public class CraftingRecipeSupplier extends RecipeProvider {
                 ingredient,ingredient2,result,onOut,tick,mainEffect,secondaryEffect,count
         );
         builder.unlockedBy(getHasName(ingredient), has(ingredient));
-        builder.save(consumer);
+        builder.save(consumer, ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, getHasName(result.getItem()) + "_from_blending"));
     }
 
 
@@ -1019,6 +1019,7 @@ public class CraftingRecipeSupplier extends RecipeProvider {
     }
 
     public void headBands(RecipeOutput consumer, Item result, Item mainColor, Item secondaryColor) {
+        var basePath = BuiltInRegistries.ITEM.getKey(result).toString().replaceAll(KawaiiDishes.modId+":","");
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("###")
                 .pattern("@ @")
@@ -1029,105 +1030,105 @@ public class CraftingRecipeSupplier extends RecipeProvider {
                 .save(consumer);
         for (var i : ItemRegister.ITEMS.getEntries().stream().toList()) {
             var path = BuiltInRegistries.ITEM.getKey(i.get()).toString().replaceAll(KawaiiDishes.modId+":","");
-            if (path.equals(result.toString() + "_cat_ears_black")) {
+            if (path.equals(basePath + "_cat_ears_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackCatEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString()+ "_cat_ears_white")) {
+            if (path.equals(basePath+ "_cat_ears_white")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.whiteCatEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.getDescription() + "_cat_ears_caramel")) {
+            if (path.equals(basePath + "_cat_ears_caramel")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.caramelCatEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_bunny_ears_black")) {
+            if (path.equals(basePath + "_bunny_ears_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackBunnyEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString()+ "_bunny_ears_white")) {
+            if (path.equals(basePath+ "_bunny_ears_white")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.whiteBunnyEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.getDescription() + "_bunny_ears_caramel")) {
+            if (path.equals(basePath + "_bunny_ears_caramel")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.caramelBunnyEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_ears_black")) {
+            if (path.equals(basePath + "_fox_ears_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackFoxEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_ears_brown")) {
+            if (path.equals(basePath + "_fox_ears_brown")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.brownFoxEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_ears_red")) {
+            if (path.equals(basePath + "_fox_ears_red")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.redFoxEars.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_horns_light_gray")) {
+            if (path.equals(basePath + "_horns_light_gray")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.lightGrayHorns.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_horns_gray")) {
+            if (path.equals(basePath + "_horns_gray")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.grayHorns.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_horns_white")) {
+            if (path.equals(basePath + "_horns_white")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.whiteHorns.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_horns_red")) {
+            if (path.equals(basePath + "_horns_red")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.redHorns.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_horns_purple")) {
+            if (path.equals(basePath + "_horns_purple")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.purpleHorns.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_horns_black")) {
+            if (path.equals(basePath + "_horns_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackHorns.get().getDefaultInstance()))
@@ -1241,93 +1242,94 @@ public class CraftingRecipeSupplier extends RecipeProvider {
     }
 
     public void maidOutfitVariations(RecipeOutput consumer, Item result) {
+        var basePath = BuiltInRegistries.ITEM.getKey(result).toString().replaceAll(KawaiiDishes.modId+":","");
         for (var i : ItemRegister.ITEMS.getEntries().stream().toList()) {
             var path = BuiltInRegistries.ITEM.getKey(i.get()).toString().replaceAll(KawaiiDishes.modId+":","");
-            if (path.equals(result.toString() + "_cat_tail_black")) {
+            if (path.equals(basePath + "_cat_tail_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackCatTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_cat_tail_white")) {
+            if (path.equals(basePath + "_cat_tail_white")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.whiteCatTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_cat_tail_caramel")) {
+            if (path.equals(basePath + "_cat_tail_caramel")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.caramelCatTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_bunny_tail_black")) {
+            if (path.equals(basePath + "_bunny_tail_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackBunnyTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_bunny_tail_white")) {
+            if (path.equals(basePath + "_bunny_tail_white")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.whiteBunnyTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_bunny_tail_caramel")) {
+            if (path.equals(basePath + "_bunny_tail_caramel")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.caramelBunnyTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_tail_black")) {
+            if (path.equals(basePath + "_fox_tail_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackFoxTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_tail_red")) {
+            if (path.equals(basePath + "_fox_tail_red")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.redFoxTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_tail_brown")) {
+            if (path.equals(basePath + "_fox_tail_brown")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.brownFoxTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_fox_tail_white")) {
+            if (path.equals(basePath + "_fox_tail_white")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.whiteFoxTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_devil_tail_black")) {
+            if (path.equals(basePath + "_devil_tail_black")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.blackDevilTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_devil_tail_red")) {
+            if (path.equals(basePath + "_devil_tail_red")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.redDevilTail.get().getDefaultInstance()))
                         .unlockedBy(getHasName(result), has(result))
                         .save(consumer);
             }
-            if (path.equals(result.toString() + "_devil_tail_purple")) {
+            if (path.equals(basePath + "_devil_tail_purple")) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,i.get())
                         .requires(Ingredient.of(result.getDefaultInstance()))
                         .requires(Ingredient.of(ItemRegister.purpleDevilTail.get().getDefaultInstance()))

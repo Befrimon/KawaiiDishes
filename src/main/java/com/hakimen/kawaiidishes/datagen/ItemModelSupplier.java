@@ -19,29 +19,90 @@ public class ItemModelSupplier extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        for (var block : BlockRegister.BLOCKS.getEntries().stream().toList()) {
-            String path = BuiltInRegistries.BLOCK.getKey(block.get()).toString().replaceAll(KawaiiDishes.modId + ":", "");
-            if (path.contains("_stool")) {
+        for (var block: BlockRegister.BLOCKS.getEntries().stream().toList()) {
+            String path = BuiltInRegistries.BLOCK.getKey(block.get()).toString().replaceAll(KawaiiDishes.modId+":","");
+            if(path.contains("_stool")){
                 stool(block.get());
-            } else if (path.endsWith("milkshake")) {
+            }else if(path.endsWith("milkshake")){
                 milkshake(block.get());
-            } else if (path.endsWith("coffee")) {
+            }else if(path.endsWith("coffee")){
                 coffee(block.get());
-            } else if (path.endsWith("ice_cream")) {
+            }else if(path.endsWith("ice_cream")){
                 iceCream(block.get());
-            } else if (path.endsWith("cake")) {
+            }else if(path.endsWith("cake")){
                 cake(block.get());
-            } else if (path.contains("coffee_bush") || path.contains("mortar_and_pestle")) {
+            }
+            else if(path.contains("coffee_bush") || path.contains("mortar_and_pestle")){
                 continue;
-            } else
+            }else
                 block(block.get());
         }
+        for(var item : ItemRegister.ITEMS.getEntries().stream().toList()){
+            String path = BuiltInRegistries.ITEM.getKey(item.get()).toString().replaceAll(KawaiiDishes.modId+":","");
+            if(path.contains("_headband")){
+                if(path.endsWith("_cat_ears_black")){
+                    catBandItem(item.get(),"cat_ears_black");
+                }
+                else if(path.endsWith("_cat_ears_white")){
+                    catBandItem(item.get(),"cat_ears_white");
+                }
+                else if(path.endsWith("_cat_ears_caramel")) {
+                    catBandItem(item.get(),"cat_ears_caramel");
+                }
+                else if(path.endsWith("_fox_ears_black")){
+                    foxBandItem(item.get(),"cat_ears_black","fox_ears_black");
+                }
+                else if(path.endsWith("_fox_ears_white")){
+                    foxBandItem(item.get(),"cat_ears_white","fox_ears_white");
+                }
+                else if(path.endsWith("_fox_ears_red")) {
+                    foxBandItem(item.get(),"fox_ears_red","fox_ears_red");
+                }
+                else if(path.endsWith("_fox_ears_brown")) {
+                    foxBandItem(item.get(),"fox_ears_brown","fox_ears_brown");
+                }
+                else if(path.endsWith("_bunny_ears_black")){
+                    bunnyBandItem(item.get(),"bunny_ears_black","bunny_ears_black");
+                }
+                else if(path.endsWith("_bunny_ears_white")){
+                    bunnyBandItem(item.get(),"bunny_ears_white","bunny_ears_white");
+                }
+                else if(path.endsWith("_bunny_ears_caramel")) {
+                    bunnyBandItem(item.get(),"bunny_ears_caramel","bunny_ears_caramel");
+                }
+                else if(path.endsWith("_horns_white")){
+                    bigHornBandItem(item.get(),"white_horn","horns_white");
+                }
+                else if(path.endsWith("_horns_gray")){
+                    bigHornBandItem(item.get(),"gray_horn","horns_gray");
+                }
+                else if(path.endsWith("_horns_light_gray")){
+                    bigHornBandItem(item.get(),"light_gray_horn","horns_light_gray");
+                }
+                else if(path.endsWith("_horns_red")){
+                    hornBandItem(item.get(),"red_horns","horns_red");
+                }
+                else if(path.endsWith("_horns_purple")){
+                    hornBandItem(item.get(),"purple_horns","horns_purple");
+                }
+                else if(path.endsWith("_horns_black")){
+                    hornBandItem(item.get(),"black_horns","horns_black");
+                }
+                else{
+                    headBandItem(item.get());
+                }
+            }else if(path.contains("_maid_dress")) {
+                maidDressItem(item.get());
+            }else if(path.contains("thigh_highs")){
+                thighHighItem(item.get());
+            }
+        }
 
-        simpleItem(ItemRegister.sweetBerryCookie.get());
-        simpleItem(ItemRegister.chocolateCookie.get());
-        simpleItem(ItemRegister.honeyCookie.get());
-        simpleItem(ItemRegister.goldenCookie.get());
-        simpleItem(ItemRegister.unbindingCookie.get());
+        cookieItem(ItemRegister.sweetBerryCookie.get());
+        cookieItem(ItemRegister.chocolateCookie.get());
+        cookieItem(ItemRegister.honeyCookie.get());
+        cookieItem(ItemRegister.goldenCookie.get());
+        cookieItem(ItemRegister.unbindingCookie.get());
 
         simpleItem(ItemRegister.cakePiece.get());
         simpleItem(ItemRegister.cheeseCakePiece.get());
@@ -75,32 +136,88 @@ public class ItemModelSupplier extends ItemModelProvider {
     }
 
     private ItemModelBuilder simpleItem(Item item) {
-        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId + ":", ""),
+        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
                 ResourceLocation.parse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "item/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","")));
+    }
+    private ItemModelBuilder thighHighItem(Item item) {
+        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.parse("item/generated")).texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/thigh_highs/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 
-    private ItemModelBuilder block(Block block) {
-        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", ""), ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "block/" + BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+    private ItemModelBuilder maidDressItem(Item item) {
+        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.parse("item/generated")).texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/maid_dresses/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 
-    private ItemModelBuilder cake(Block block) {
-        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", ""), ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "block/cake/cakes/" + BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+    private ItemModelBuilder cookieItem(Item item) {
+        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.parse("item/generated")).texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/cookie/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 
-    private ItemModelBuilder milkshake(Block block) {
-        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", ""), ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "block/milk_shakes/" + BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+    private ItemModelBuilder catBandItem(Item item,String type) {
+        return withExistingParent(
+                BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/cat_headband"))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/" + type))
+                .texture("1", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headbands/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","").replaceAll("_"+type,"")));
+    }
+    private ItemModelBuilder foxBandItem(Item item,String type,String name) {
+        return withExistingParent(
+                BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/fox_headband"))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/" + type))
+                .texture("1", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headbands/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","").replaceAll("_"+name,"")));
+    }
+    private ItemModelBuilder bunnyBandItem(Item item,String type,String name) {
+        return withExistingParent(
+                BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/bunny_headband"))
+                .texture("1", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/" + type))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headbands/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","").replaceAll("_"+name,"")));
+    }
+    private ItemModelBuilder bigHornBandItem(Item item,String type,String name) {
+        return withExistingParent(
+                BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/big_horn_headband"))
+                .texture("1", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/horns/" + type))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headbands/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","").replaceAll("_"+name,"")));
+    }
+    private ItemModelBuilder hornBandItem(Item item,String type,String name) {
+        return withExistingParent(
+                BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/horns_headband"))
+                .texture("1", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/horns/" + type))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headbands/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","").replaceAll("_"+name,"")));
+    }
+    private ItemModelBuilder headBandItem(Item item) {
+        return withExistingParent(
+                BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":",""),
+                ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headband"))
+                .texture("0", ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"item/headbands/" + BuiltInRegistries.ITEM.getKey(item).toString().replaceAll(KawaiiDishes.modId+":","")));
+    }
+    private ItemModelBuilder block(Block block){
+        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":",""),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"block/"+BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 
-    private ItemModelBuilder coffee(Block block) {
-        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", ""), ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "block/coffees/" + BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+    private ItemModelBuilder cake(Block block){
+        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":",""),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"block/cake/cakes/"+BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 
-    private ItemModelBuilder iceCream(Block block) {
-        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", ""), ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "block/ice_creams/" + BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+    private ItemModelBuilder milkshake(Block block){
+        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":",""),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"block/milk_shakes/"+BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":","")));
+    }
+    private ItemModelBuilder coffee(Block block){
+        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":",""),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"block/coffees/"+BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":","")));
+    }
+    private ItemModelBuilder iceCream(Block block){
+        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":",""),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"block/ice_creams/"+BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 
-    private ItemModelBuilder stool(Block block) {
-        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", ""), ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "block/stools/" + BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId + ":", "")));
+    private ItemModelBuilder stool(Block block){
+        return withExistingParent(BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":",""),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"block/stools/"+BuiltInRegistries.BLOCK.getKey(block).toString().replaceAll(KawaiiDishes.modId+":","")));
     }
 }

@@ -1,8 +1,8 @@
-// 1.20.1	2023-06-20T16:05:33.3366023	Tags for minecraft:item mod id kawaiidishes
-1ad6a211887ae9637c0513d7918829bd438ddf13 data/kawaiidishes/tags/items/bunny_suits.json
-7eeec1ad2b531fa115552d1c1d3d176a8a08e54a data/kawaiidishes/tags/items/eared_headbands.json
-48f0692b08d39433a39c4ffa24c928f1f9dfd901 data/kawaiidishes/tags/items/ears.json
-0f2b1346fbe899fa0299ad2aeb5cfa4a6cffb8fc data/kawaiidishes/tags/items/headbands.json
-6839d9929b07e8285494f366b0a69a4d5a12fb52 data/kawaiidishes/tags/items/maid_dresses.json
-20d7f86c2b32f0bb0e03c7a26cb0a7486f7725de data/kawaiidishes/tags/items/tailed_maid_dresses.json
-8cf8906b75bf990e64811a310507de4c7e8a77ee data/kawaiidishes/tags/items/tails.json
+// 1.21.1	2026-06-23T21:05:21.619659727	Tags for minecraft:item mod id kawaiidishes
+1ad6a211887ae9637c0513d7918829bd438ddf13 data/kawaiidishes/tags/item/bunny_suits.json
+7eeec1ad2b531fa115552d1c1d3d176a8a08e54a data/kawaiidishes/tags/item/eared_headbands.json
+48f0692b08d39433a39c4ffa24c928f1f9dfd901 data/kawaiidishes/tags/item/ears.json
+0f2b1346fbe899fa0299ad2aeb5cfa4a6cffb8fc data/kawaiidishes/tags/item/headbands.json
+6839d9929b07e8285494f366b0a69a4d5a12fb52 data/kawaiidishes/tags/item/maid_dresses.json
+20d7f86c2b32f0bb0e03c7a26cb0a7486f7725de data/kawaiidishes/tags/item/tailed_maid_dresses.json
+8cf8906b75bf990e64811a310507de4c7e8a77ee data/kawaiidishes/tags/item/tails.json

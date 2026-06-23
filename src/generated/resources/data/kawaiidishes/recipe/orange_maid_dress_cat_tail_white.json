@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "kawaiidishes:orange_maid_dress"
+    },
+    {
+      "item": "kawaiidishes:white_cat_tail"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:orange_maid_dress_cat_tail_white"
+  }
+}

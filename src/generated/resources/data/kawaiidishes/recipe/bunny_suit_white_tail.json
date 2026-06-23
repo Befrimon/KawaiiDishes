@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:red_wool"
+    },
+    "@": {
+      "item": "kawaiidishes:white_bunny_tail"
+    }
+  },
+  "pattern": [
+    "# #",
+    "#@#",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:bunny_suit_white_tail"
+  }
+}

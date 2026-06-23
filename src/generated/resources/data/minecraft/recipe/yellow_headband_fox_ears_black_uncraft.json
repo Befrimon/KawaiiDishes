@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "kawaiidishes:yellow_headband_fox_ears_black"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:black_fox_ears"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "kawaiidishes:blending",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:milk_bucket"
+      },
+      {
+        "item": "minecraft:sugar"
+      }
+    ]
+  ],
+  "output": {
+    "count": 4,
+    "id": "kawaiidishes:condensed_milk"
+  },
+  "ticks": 100
+}

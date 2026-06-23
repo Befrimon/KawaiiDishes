@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "kawaiidishes:cocoa_powder"
+    },
+    {
+      "item": "kawaiidishes:cocoa_powder"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:milk_chocolate_bar"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.12,
+  "ingredient": {
+    "item": "kawaiidishes:dried_cocoa_beans"
+  },
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:roasted_cocoa_beans"
+  }
+}

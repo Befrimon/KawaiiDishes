@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "w": {
+      "item": "minecraft:wheat"
+    },
+    "x": {
+      "item": "kawaiidishes:cream_cheese"
+    }
+  },
+  "pattern": [
+    "xxx",
+    "www"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:cheese_cake"
+  }
+}

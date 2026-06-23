@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cocoa_powder": {
+      "conditions": {
+        "items": [
+          {
+            "items": "kawaiidishes:cocoa_powder"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "kawaiidishes:milk_chocolate_bar"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cocoa_powder"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "kawaiidishes:milk_chocolate_bar"
+    ]
+  }
+}

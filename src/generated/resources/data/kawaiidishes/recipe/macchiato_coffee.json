@@ -1,0 +1,27 @@
+{
+  "type": "kawaiidishes:coffee_machining",
+  "ingredients": [
+    [
+      {
+        "item": "kawaiidishes:coffee_powder"
+      },
+      {
+        "item": "kawaiidishes:coffee_powder"
+      },
+      {
+        "item": "minecraft:sugar"
+      }
+    ]
+  ],
+  "itemOnOutput": {
+    "count": 1,
+    "id": "kawaiidishes:mug"
+  },
+  "milk": true,
+  "output": {
+    "count": 1,
+    "id": "kawaiidishes:macchiato_coffee"
+  },
+  "ticks": 100,
+  "water": true
+}

@@ -113,14 +113,28 @@ public class BlenderRecipe implements Recipe<ContainerRecipeInput> {
                 ItemStack.CODEC.optionalFieldOf("onOutput", ItemStack.EMPTY).forGetter(r -> r.onOutput)
         ).apply(inst, BlenderRecipe::new));
 
-        private static final StreamCodec<RegistryFriendlyByteBuf, BlenderRecipe> STREAM_CODEC = StreamCodec.composite(
-                ItemStack.STREAM_CODEC, r -> r.output,
-                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)),
-                r -> r.recipeItems,
-                ByteBufCodecs.VAR_INT, r -> r.ticks,
-                ItemStack.STREAM_CODEC, r -> r.onOutput,
-                BlenderRecipe::new
-        );
+        private static final StreamCodec<RegistryFriendlyByteBuf, BlenderRecipe> STREAM_CODEC = new StreamCodec<>() {
+            @Override
+            public BlenderRecipe decode(RegistryFriendlyByteBuf buf) {
+                ItemStack output = ItemStack.STREAM_CODEC.decode(buf);
+                var ingredients = Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).decode(buf);
+                int ticks = ByteBufCodecs.VAR_INT.decode(buf);
+                boolean hasOnOutput = buf.readBoolean();
+                ItemStack onOutput = hasOnOutput ? ItemStack.STREAM_CODEC.decode(buf) : ItemStack.EMPTY;
+                return new BlenderRecipe(output, ingredients, ticks, onOutput);
+            }
+
+            @Override
+            public void encode(RegistryFriendlyByteBuf buf, BlenderRecipe recipe) {
+                ItemStack.STREAM_CODEC.encode(buf, recipe.output);
+                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)).encode(buf, recipe.recipeItems);
+                ByteBufCodecs.VAR_INT.encode(buf, recipe.ticks);
+                buf.writeBoolean(!recipe.onOutput.isEmpty());
+                if (!recipe.onOutput.isEmpty()) {
+                    ItemStack.STREAM_CODEC.encode(buf, recipe.onOutput);
+                }
+            }
+        };
 
         @Override
         public MapCodec<BlenderRecipe> codec() {

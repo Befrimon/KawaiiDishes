@@ -1,0 +1,24 @@
+{
+  "type": "kawaiidishes:coffee_machining",
+  "ingredients": [
+    [
+      {
+        "item": "kawaiidishes:coffee_powder"
+      },
+      {
+        "item": "kawaiidishes:coffee_powder"
+      }
+    ]
+  ],
+  "itemOnOutput": {
+    "count": 1,
+    "id": "kawaiidishes:mug"
+  },
+  "milk": false,
+  "output": {
+    "count": 1,
+    "id": "kawaiidishes:doppio_coffee"
+  },
+  "ticks": 100,
+  "water": true
+}

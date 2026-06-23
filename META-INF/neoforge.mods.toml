@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="21.1.234"
+license="MIT"
+
+[[mods]]
+modId="kawaiidishes"
+version="1.11.0"
+displayName="Kawaii Dishes"
+authors="Hakimen"
+description='''A mod about maids, food, and other stuff'''
+
+[[dependencies.kawaiidishes]]
+    modId="neoforge"
+    type="required"
+    versionRange="21.1.234"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.kawaiidishes]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1,1.22)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.kawaiidishes]]
+    modId="geckolib"
+    type="required"
+    versionRange="[4.6,)"
+    ordering="NONE"
+    side="CLIENT"

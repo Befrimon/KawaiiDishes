@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "x": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "pattern": [
+    "x x",
+    "xxx"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:glass_cup"
+  }
+}

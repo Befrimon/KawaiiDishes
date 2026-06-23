@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "kawaiidishes:orange_headband"
+    },
+    {
+      "item": "kawaiidishes:black_cat_ears"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:orange_headband_cat_ears_black"
+  }
+}

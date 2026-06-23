@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:orange_wool"
+    },
+    "s": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "# #",
+    "#s#",
+    "s s"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:red_fox_ears"
+  }
+}

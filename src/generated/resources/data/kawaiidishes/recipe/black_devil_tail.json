@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:black_wool"
+    },
+    "s": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "  #",
+    "#s#",
+    "s# "
+  ],
+  "result": {
+    "count": 1,
+    "id": "kawaiidishes:black_devil_tail"
+  }
+}

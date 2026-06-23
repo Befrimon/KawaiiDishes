@@ -1,0 +1,22 @@
+{
+  "type": "kawaiidishes:ice_cream_making",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:snowball"
+      },
+      {
+        "item": "kawaiidishes:cocoa_powder"
+      }
+    ]
+  ],
+  "itemOnOutput": {
+    "count": 1,
+    "id": "kawaiidishes:glass_cup"
+  },
+  "output": {
+    "count": 1,
+    "id": "kawaiidishes:chocolate_ice_cream"
+  },
+  "ticks": 100
+}

@@ -1,0 +1,22 @@
+{
+  "type": "kawaiidishes:ice_cream_making",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:snowball"
+      },
+      {
+        "item": "minecraft:glow_berries"
+      }
+    ]
+  ],
+  "itemOnOutput": {
+    "count": 1,
+    "id": "kawaiidishes:glass_cup"
+  },
+  "output": {
+    "count": 1,
+    "id": "kawaiidishes:glow_berry_ice_cream"
+  },
+  "ticks": 100
+}

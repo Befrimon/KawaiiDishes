@@ -1,0 +1,13 @@
+{
+  "type": "kawaiidishes:blending",
+  "ingredients": [
+    {
+      "item": "kawaiidishes:roasted_coffee_beans"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "kawaiidishes:coffee_powder"
+  },
+  "ticks": 100
+}

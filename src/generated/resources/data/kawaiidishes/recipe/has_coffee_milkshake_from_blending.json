@@ -1,0 +1,22 @@
+{
+  "type": "kawaiidishes:blending",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:milk_bucket"
+      },
+      {
+        "item": "kawaiidishes:coffee_ice_cream"
+      }
+    ]
+  ],
+  "onOutput": {
+    "count": 1,
+    "id": "kawaiidishes:milkshake_cup"
+  },
+  "output": {
+    "count": 1,
+    "id": "kawaiidishes:coffee_milkshake"
+  },
+  "ticks": 100
+}
