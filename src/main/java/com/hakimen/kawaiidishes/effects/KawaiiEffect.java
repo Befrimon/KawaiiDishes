@@ -14,35 +14,32 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
-
 public class KawaiiEffect extends MobEffect {
     public KawaiiEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF00C3);
     }
 
-
     @Override
-    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         var entities = pLivingEntity.level().getEntities(pLivingEntity,
                 AABB.ofSize(new Vec3(
                         pLivingEntity.getX(),
                         pLivingEntity.getY(),
                         pLivingEntity.getZ()
-                ),8*(1+pAmplifier),8*(1+pAmplifier),8*(1+pAmplifier)));
+                ), 8 * (1 + pAmplifier), 8 * (1 + pAmplifier), 8 * (1 + pAmplifier)));
         Random r = KawaiiDishes.RANDOM;
-        for (Entity entity:entities) {
-            if((entity instanceof LivingEntity livingEntity && EntityUtils.isHumanoid(livingEntity)&& pLivingEntity instanceof Player player)){
-                if(r.nextFloat(0,1) < KawaiiDishesCommonConfig.chanceToMessage.get()){
-                    KawaiiMessages.sendMessage(livingEntity,player);
+        for (Entity entity : entities) {
+            if ((entity instanceof LivingEntity livingEntity && EntityUtils.isHumanoid(livingEntity) && pLivingEntity instanceof Player player)) {
+                if (r.nextFloat() < KawaiiDishesCommonConfig.chanceToMessage.get()) {
+                    KawaiiMessages.sendMessage(livingEntity, player);
                 }
             }
-
         }
-        super.applyEffectTick(pLivingEntity, pAmplifier);
+        return true;
     }
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+    public boolean shouldApplyEffectTickThisTick(int pDuration, int pAmplifier) {
         return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.hakimen.kawaiidishes.blocks;
 
 import com.hakimen.kawaiidishes.entity.SittableEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,8 +19,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class StoolBlock extends Block {
+    private static final MapCodec<StoolBlock> CODEC = simpleCodec(props -> new StoolBlock());
+
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
+
     public StoolBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).strength(1,1));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(1,1));
     }
 
     @Override
@@ -35,7 +43,7 @@ public class StoolBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         return SittableEntity.sitDown(pPlayer, pLevel, pPos);
     }
 }

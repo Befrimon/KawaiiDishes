@@ -1,6 +1,6 @@
 package com.hakimen.kawaiidishes.utils;
 
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 public interface InventoryMixin {
     ItemStackHandler getInventory();

@@ -3,6 +3,7 @@ package com.hakimen.kawaiidishes.blocks.block_entities;
 import com.hakimen.kawaiidishes.registry.BlockEntityRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,17 +16,17 @@ public class PlaceableFoodBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
         pTag.put("mainEffect",mainEffect);
         pTag.put("secondaryEffect",secondaryEffect);
-        super.saveAdditional(pTag);
+        super.saveAdditional(pTag, registries);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+        super.loadAdditional(pTag, registries);
         mainEffect = pTag.getCompound("mainEffect") != null ? pTag.getCompound("mainEffect") : new CompoundTag() ;
         secondaryEffect = pTag.getCompound("secondaryEffect") != null ? pTag.getCompound("secondaryEffect") : new CompoundTag() ;
-        super.load(pTag);
     }
 
 

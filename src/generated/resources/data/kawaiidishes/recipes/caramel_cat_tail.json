@@ -6,7 +6,7 @@
       "item": "minecraft:yellow_wool"
     },
     "s": {
-      "tag": "forge:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "ss "
   ],
   "result": {
-    "item": "kawaiidishes:caramel_cat_tail"
+    "id": "kawaiidishes:caramel_cat_tail"
   },
   "show_notification": true
 }

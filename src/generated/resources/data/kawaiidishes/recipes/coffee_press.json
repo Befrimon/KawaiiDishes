@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "g": {
-      "tag": "forge:glass_panes"
+      "tag": "c:glass_panes"
     },
     "x": {
       "item": "minecraft:iron_ingot"
@@ -15,7 +15,7 @@
     "xxx"
   ],
   "result": {
-    "item": "kawaiidishes:coffee_press"
+    "id": "kawaiidishes:coffee_press"
   },
   "show_notification": true
 }

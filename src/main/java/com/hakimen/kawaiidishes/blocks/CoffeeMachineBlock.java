@@ -1,6 +1,7 @@
 package com.hakimen.kawaiidishes.blocks;
 
 import com.hakimen.kawaiidishes.blocks.block_entities.CoffeeMachineBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,66 +25,65 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class CoffeeMachineBlock extends Block implements EntityBlock{
+public class CoffeeMachineBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public CoffeeMachineBlock() {
-        super(Properties.copy(Blocks.WHITE_WOOL).strength(2f,2f)
-                .sound(SoundType.METAL));
-        registerDefaultState( getStateDefinition().any()
-                .setValue(FACING, Direction.NORTH));
+    private static final MapCodec<CoffeeMachineBlock> CODEC = simpleCodec(props -> new CoffeeMachineBlock());
 
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
+
+    public CoffeeMachineBlock() {
+        super(Properties.ofFullCopy(Blocks.WHITE_WOOL).strength(2f, 2f)
+                .sound(SoundType.METAL));
+        registerDefaultState(getStateDefinition().any()
+                .setValue(FACING, Direction.NORTH));
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return pLevel.isClientSide ? null
-                : (level, pos, state, blockEntity) -> ((CoffeeMachineBlockEntity) blockEntity).tick(level,pos,state,(CoffeeMachineBlockEntity)blockEntity);
+                : (level, pos, state, blockEntity) -> ((CoffeeMachineBlockEntity) blockEntity).tick(level, pos, state, (CoffeeMachineBlockEntity) blockEntity);
     }
-
 
     @Override
     @Deprecated
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-
-        VoxelShape box = Block.box(0,0,0,16,2,16);
-        box = Shapes.join(box, Block.box(1,0,1,15,14,15),BooleanOp.OR);
-        box = Shapes.join(box,Block.box(0,14,0,16,16,16),BooleanOp.OR);
+        VoxelShape box = Block.box(0, 0, 0, 16, 2, 16);
+        box = Shapes.join(box, Block.box(1, 0, 1, 15, 14, 15), BooleanOp.OR);
+        box = Shapes.join(box, Block.box(0, 14, 0, 16, 16, 16), BooleanOp.OR);
         return box;
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> properties )
-    {
-        properties.add( FACING );
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> properties) {
+        properties.add(FACING);
     }
 
     @Nonnull
     @Override
     @Deprecated
-    public BlockState mirror( BlockState state, Mirror mirrorIn )
-    {
-        return state.rotate( mirrorIn.getRotation( state.getValue( FACING ) ) );
+    public BlockState mirror(BlockState state, Mirror mirrorIn) {
+        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
+
     @Nonnull
     @Override
     @Deprecated
-    public BlockState rotate( BlockState state, Rotation rot )
-    {
-        return state.setValue( FACING, rot.rotate( state.getValue( FACING ) ) );
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @javax.annotation.Nullable
     @Override
-    public BlockState getStateForPlacement( BlockPlaceContext placement )
-    {
-        return defaultBlockState().setValue( FACING, placement.getHorizontalDirection().getOpposite() );
+    public BlockState getStateForPlacement(BlockPlaceContext placement) {
+        return defaultBlockState().setValue(FACING, placement.getHorizontalDirection().getOpposite());
     }
-
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
@@ -92,7 +92,7 @@ public class CoffeeMachineBlock extends Block implements EntityBlock{
             if (blockentity instanceof CoffeeMachineBlockEntity coffeeMachine) {
                 for (int i = 0; i < coffeeMachine.inventory.getSlots(); i++) {
                     pLevel.addFreshEntity(new ItemEntity(
-                            pLevel,pPos.getX(),
+                            pLevel, pPos.getX(),
                             pPos.getY(),
                             pPos.getZ(),
                             coffeeMachine.inventory.getStackInSlot(i)
@@ -104,11 +104,11 @@ public class CoffeeMachineBlock extends Block implements EntityBlock{
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof CoffeeMachineBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (CoffeeMachineBlockEntity)entity, pPos);
+            if (entity instanceof CoffeeMachineBlockEntity) {
+                pPlayer.openMenu((CoffeeMachineBlockEntity) entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -119,6 +119,6 @@ public class CoffeeMachineBlock extends Block implements EntityBlock{
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new CoffeeMachineBlockEntity(pPos,pState);
+        return new CoffeeMachineBlockEntity(pPos, pState);
     }
 }

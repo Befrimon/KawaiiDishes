@@ -24,7 +24,7 @@
     "iri"
   ],
   "result": {
-    "item": "kawaiidishes:coffee_machine"
+    "id": "kawaiidishes:coffee_machine"
   },
   "show_notification": true
 }

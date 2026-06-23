@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nonnull;
 
 public class IceCreamMachineRecipeCategory implements IRecipeCategory<IceCreamMachineRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(KawaiiDishes.modId, "ice_cream_making");
+    public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "ice_cream_making");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(KawaiiDishes.modId, "textures/integration/jei/ice_cream_machine_gui.png");
+            ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "textures/integration/jei/ice_cream_machine_gui.png");
 
     private final IDrawable background;
     private final IDrawable icon;

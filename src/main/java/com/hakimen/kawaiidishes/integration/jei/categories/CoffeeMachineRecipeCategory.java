@@ -21,9 +21,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import javax.annotation.Nonnull;
 
 public class CoffeeMachineRecipeCategory implements IRecipeCategory<CoffeeMachineRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(KawaiiDishes.modId, "coffee_machining");
+    public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "coffee_machining");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(KawaiiDishes.modId, "textures/integration/jei/coffee_machine_gui.png");
+            ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "textures/integration/jei/coffee_machine_gui.png");
 
     private final IDrawable background;
     private final IDrawable icon;

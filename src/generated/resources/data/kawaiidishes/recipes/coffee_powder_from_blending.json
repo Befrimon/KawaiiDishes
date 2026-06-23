@@ -6,8 +6,7 @@
     }
   ],
   "output": {
-    "item": "kawaiidishes:coffee_powder",
-    "nbt": "{}"
+    "id": "kawaiidishes:coffee_powder"
   },
   "ticks": 100
 }

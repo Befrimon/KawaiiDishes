@@ -1,16 +1,14 @@
 package com.hakimen.kawaiidishes.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class KawaiiDishesClientConfig {
-    public static final ForgeConfigSpec.Builder clientConfigBuilder = new ForgeConfigSpec.Builder();
+    public static final ModConfigSpec.Builder clientConfigBuilder = new ModConfigSpec.Builder();
 
-    public static final ForgeConfigSpec clientSpec;
+    public static final ModConfigSpec clientSpec;
     static {
         clientConfigBuilder.push("Client Side Configs for Kawaii Dishes");
         clientConfigBuilder.pop();
         clientSpec = clientConfigBuilder.build();
     }
-
-
 }

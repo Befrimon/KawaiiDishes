@@ -6,7 +6,7 @@
       "item": "minecraft:red_wool"
     },
     "s": {
-      "tag": "forge:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "s# "
   ],
   "result": {
-    "item": "kawaiidishes:red_devil_tail"
+    "id": "kawaiidishes:red_devil_tail"
   },
   "show_notification": true
 }

@@ -11,11 +11,10 @@
     ]
   ],
   "itemOnOutput": {
-    "item": "kawaiidishes:glass_cup"
+    "id": "kawaiidishes:glass_cup"
   },
   "output": {
-    "item": "kawaiidishes:chocolate_ice_cream",
-    "nbt": "{mainEffect:{Ambient:0b,Amplifier:0b,CurativeItems:[{Count:1b,id:\"minecraft:milk_bucket\"}],Duration:300,Id:12,ShowIcon:1b,ShowParticles:1b,\"forge:id\":\"minecraft:fire_resistance\"}}"
+    "id": "kawaiidishes:chocolate_ice_cream"
   },
   "ticks": 100
 }

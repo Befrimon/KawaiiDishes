@@ -7,6 +7,7 @@ import com.hakimen.kawaiidishes.datagen.recipebuilder.CoffeePressRecipeBuilder;
 import com.hakimen.kawaiidishes.datagen.recipebuilder.IceCreamMachineRecipeBuilder;
 import com.hakimen.kawaiidishes.registry.EffectRegister;
 import com.hakimen.kawaiidishes.registry.ItemRegister;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
@@ -19,18 +20,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SimpleCookingSerializer;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
-import java.util.function.Consumer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.SmokingRecipe;
+import net.neoforged.neoforge.common.Tags;
 
-public class CraftingRecipeSupplier extends RecipeProvider implements IConditionBuilder {
-    public CraftingRecipeSupplier(DataGenerator pGenerator) {
-        super(pGenerator.getPackOutput());
+import java.util.concurrent.CompletableFuture;
+
+public class CraftingRecipeSupplier extends RecipeProvider {
+    public CraftingRecipeSupplier(DataGenerator pGenerator, CompletableFuture<HolderLookup.Provider> registries) {
+        super(pGenerator.getPackOutput(), registries);
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    protected void buildRecipes(RecipeOutput pFinishedRecipeConsumer) {
 
         roasting(pFinishedRecipeConsumer, ItemRegister.coffeeFruit.get(), ItemRegister.driedCoffeeBeans.get(), ItemRegister.roastedCoffeeBeans.get());
         roasting(pFinishedRecipeConsumer, Items.COCOA_BEANS, ItemRegister.driedCocoaBeans.get(), ItemRegister.roastedCocoaBeans.get());
@@ -76,7 +79,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .pattern("xxx")
                 .pattern("i.i")
                 .pattern("iri")
-                .define('x', Tags.Items.GLASS)
+                .define('x', Tags.Items.GLASS_BLOCKS)
                 .define('r', Items.REDSTONE)
                 .define('.', Items.IRON_NUGGET)
                 .define('i', Items.IRON_INGOT)
@@ -207,7 +210,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         cookie(pFinishedRecipeConsumer,ItemRegister.honeyCookie.get(),8,Items.HONEY_BOTTLE);
         cookie(pFinishedRecipeConsumer,ItemRegister.sweetBerryCookie.get(),8,Items.SWEET_BERRIES);
         cookie(pFinishedRecipeConsumer,ItemRegister.chocolateCookie.get(),8,ItemRegister.cocoaPowder.get());
-        cookieGolden(pFinishedRecipeConsumer,ItemRegister.goldenCookie.get(),1, new TagKey<Item>(BuiltInRegistries.ITEM.key(),new ResourceLocation(KawaiiDishes.modId,"cookies")));
+        cookieGolden(pFinishedRecipeConsumer,ItemRegister.goldenCookie.get(),1, new TagKey<Item>(BuiltInRegistries.ITEM.key(),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"cookies")));
         cookieOfUnbinding(pFinishedRecipeConsumer);
 
         cosmetics(pFinishedRecipeConsumer);
@@ -217,7 +220,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         blendings(pFinishedRecipeConsumer);
     }
 
-    public void cookie(Consumer<FinishedRecipe> pFinishedRecipeConsumer,Item output, int count,Item middle){
+    public void cookie(RecipeOutput pFinishedRecipeConsumer,Item output, int count,Item middle){
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,output,count)
                 .pattern("#x#")
                 .define('#',Items.WHEAT)
@@ -225,17 +228,17 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .unlockedBy(getHasName(middle), has(middle))
                 .save(pFinishedRecipeConsumer);
     }
-    public void cookieGolden(Consumer<FinishedRecipe> pFinishedRecipeConsumer,Item output, int count,TagKey<Item> middle){
+    public void cookieGolden(RecipeOutput pFinishedRecipeConsumer,Item output, int count,TagKey<Item> middle){
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,output,count)
-                .pattern(" # ")
+                .pattern("###")
                 .pattern("#x#")
-                .pattern(" # ")
-                .define('#',Items.GOLD_NUGGET)
+                .pattern("###")
+                .define('#',Items.GOLD_INGOT)
                 .define('x',Ingredient.of(middle))
-                .unlockedBy(getHasName(Items.GOLD_NUGGET), has(Items.GOLD_NUGGET))
+                .unlockedBy(getHasName(Items.GOLD_INGOT), has(Items.GOLD_INGOT))
                 .save(pFinishedRecipeConsumer);
     }
-    public void cookieOfUnbinding(Consumer<FinishedRecipe> pFinishedRecipeConsumer){
+    public void cookieOfUnbinding(RecipeOutput pFinishedRecipeConsumer){
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,ItemRegister.unbindingCookie.get())
                 .pattern(" a ")
                 .pattern("bxc")
@@ -244,11 +247,11 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .define('b',Items.WITHER_SKELETON_SKULL)
                 .define('c',Items.FERMENTED_SPIDER_EYE)
                 .define('d',Items.EXPERIENCE_BOTTLE)
-                .define('x',Ingredient.of(new TagKey<Item>(BuiltInRegistries.ITEM.key(),new ResourceLocation(KawaiiDishes.modId,"cookies"))))
+                .define('x',Ingredient.of(new TagKey<Item>(BuiltInRegistries.ITEM.key(),ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId,"cookies"))))
                 .unlockedBy(getHasName(Items.COOKIE), has(Items.COOKIE))
                 .save(pFinishedRecipeConsumer);
     }
-    public void blendings(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    public void blendings(RecipeOutput pFinishedRecipeConsumer) {
         blending(pFinishedRecipeConsumer,
                 ItemRegister.roastedCoffeeBeans.get(),
                 ItemRegister.coffeePowder.get().getDefaultInstance(),
@@ -278,7 +281,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.sweetBerryIceCream.get(),
                 ItemRegister.sweetBerryMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
+                null,
                 null,
                 100,
                 1);
@@ -287,8 +290,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.glowBerryIceCream.get(),
                 ItemRegister.glowBerryMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
-                new MobEffectInstance(MobEffects.NIGHT_VISION,60*20),
+                null,
+                null,
                 100,
                 1);
         blending(pFinishedRecipeConsumer,
@@ -296,7 +299,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.napolitanoIceCream.get(),
                 ItemRegister.napolitanoMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
+                null,
                 null,
                 100,
                 1);
@@ -305,7 +308,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.chocolateIceCream.get(),
                 ItemRegister.chocolateMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
+                null,
                 null,
                 100,
                 1);
@@ -314,7 +317,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.coffeeIceCream.get(),
                 ItemRegister.coffeeMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
+                null,
                 null,
                 100,
                 1);
@@ -323,7 +326,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.mochaIceCream.get(),
                 ItemRegister.mochaMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
+                null,
                 null,
                 100,
                 1);
@@ -332,27 +335,27 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.creamIceCream.get(),
                 ItemRegister.creamMilkshake.get().getDefaultInstance(),
                 ItemRegister.milkshakeCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,30*20),
+                null,
                 null,
                 100,
                 1);
     }
 
-    public void blending(Consumer<FinishedRecipe> consumer,Item ingredient, ItemStack result,int tick,int count) {
+    public void blending(RecipeOutput consumer,Item ingredient, ItemStack result,int tick,int count) {
         BlenderRecipeBuilder builder = new BlenderRecipeBuilder(
             ingredient,result,ItemStack.EMPTY,tick,count
         );
         builder.unlockedBy(getHasName(ingredient), has(ingredient));
         builder.save(consumer);
     }
-    public void blending(Consumer<FinishedRecipe> consumer,Item ingredient,Item ingredient2, ItemStack result,int tick,int count) {
+    public void blending(RecipeOutput consumer,Item ingredient,Item ingredient2, ItemStack result,int tick,int count) {
         BlenderRecipeBuilder builder = new BlenderRecipeBuilder(
                 ingredient,ingredient2,result,ItemStack.EMPTY,tick,count
         );
         builder.unlockedBy(getHasName(ingredient), has(ingredient));
         builder.save(consumer);
     }
-    public void blending(Consumer<FinishedRecipe> consumer,Item ingredient,Item ingredient2,ItemStack result,ItemStack onOut,
+    public void blending(RecipeOutput consumer,Item ingredient,Item ingredient2,ItemStack result,ItemStack onOut,
                          MobEffectInstance mainEffect,MobEffectInstance secondaryEffect,int tick,int count) {
         BlenderRecipeBuilder builder = new BlenderRecipeBuilder(
                 ingredient,ingredient2,result,onOut,tick,mainEffect,secondaryEffect,count
@@ -362,13 +365,13 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
     }
 
 
-    public void iceCreams(Consumer<FinishedRecipe> consumer){
+    public void iceCreams(RecipeOutput consumer){
         iceCream(consumer,
                 Items.SWEET_BERRIES,
                 ItemRegister.sweetBerryIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20)
+                null
                 ,null);
 
         iceCream(consumer,
@@ -376,8 +379,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.glowBerryIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20),
-                new MobEffectInstance(MobEffects.NIGHT_VISION,30*20));
+                null,
+                null);
 
         iceCream(consumer,
                 Items.SWEET_BERRIES,
@@ -386,7 +389,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.napolitanoIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20)
+                null
                 ,null);
 
         iceCream(consumer,
@@ -394,7 +397,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.chocolateIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20)
+                null
                 ,null);
 
         iceCream(consumer,
@@ -402,7 +405,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.coffeeIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20)
+                null
                 ,null);
 
         iceCream(consumer,
@@ -411,7 +414,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.creamIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20)
+                null
                 ,null);
 
         iceCream(consumer,
@@ -421,13 +424,13 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.mochaIceCream.get().getDefaultInstance(),
                 100,
                 ItemRegister.glassCup.get().getDefaultInstance(),
-                new MobEffectInstance(MobEffects.FIRE_RESISTANCE,15*20)
+                null
                 ,null);
 
     }
 
 
-    public void iceCream(Consumer<FinishedRecipe> consumer, Item item, Item item1, Item item2, ItemStack result, int ticks, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect){
+    public void iceCream(RecipeOutput consumer, Item item, Item item1, Item item2, ItemStack result, int ticks, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect){
         IceCreamMachineRecipeBuilder builder = new IceCreamMachineRecipeBuilder(
                 Items.SNOWBALL,
                 item,
@@ -443,7 +446,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void iceCream(Consumer<FinishedRecipe> consumer, Item item, Item item1, ItemStack result, int ticks, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect){
+    public void iceCream(RecipeOutput consumer, Item item, Item item1, ItemStack result, int ticks, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect){
         IceCreamMachineRecipeBuilder builder = new IceCreamMachineRecipeBuilder(
                 Items.SNOWBALL,
                 item,
@@ -458,7 +461,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void iceCream(Consumer<FinishedRecipe> consumer, Item item, ItemStack result, int ticks, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect){
+    public void iceCream(RecipeOutput consumer, Item item, ItemStack result, int ticks, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect){
         IceCreamMachineRecipeBuilder builder = new IceCreamMachineRecipeBuilder(
                 Items.SNOWBALL,
                 item,
@@ -472,7 +475,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void decor(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    public void decor(RecipeOutput pFinishedRecipeConsumer) {
         stool(pFinishedRecipeConsumer, ItemRegister.blackStool.get(), Items.BLACK_WOOL);
         stool(pFinishedRecipeConsumer, ItemRegister.blueStool.get(), Items.BLUE_WOOL);
         stool(pFinishedRecipeConsumer, ItemRegister.brownStool.get(), Items.BROWN_WOOL);
@@ -491,7 +494,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         stool(pFinishedRecipeConsumer, ItemRegister.yellowStool.get(), Items.YELLOW_WOOL);
     }
 
-    public void cosmetics(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    public void cosmetics(RecipeOutput pFinishedRecipeConsumer) {
 
         bunnySuit(pFinishedRecipeConsumer, ItemRegister.bunnySuitBlackTail.get(),Items.BLACK_WOOL, ItemRegister.blackBunnyTail.get());
         bunnySuit(pFinishedRecipeConsumer, ItemRegister.bunnySuitCaramelTail.get(),Items.PURPLE_WOOL, ItemRegister.caramelBunnyTail.get());
@@ -650,7 +653,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         headBandsUncraft(pFinishedRecipeConsumer,"yellow");
     }
 
-    public void coffees(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    public void coffees(RecipeOutput pFinishedRecipeConsumer) {
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -661,8 +664,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 false,
                 true,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.DIG_SPEED, 30 * 20));
+                null,
+                null);
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -673,8 +676,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 false,
                 true,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.REGENERATION, 30 * 20, 1));
+                null,
+                null);
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -685,8 +688,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 true,
                 true,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.ABSORPTION, 30 * 20, 1));
+                null,
+                null);
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -695,8 +698,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 true,
                 false,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.NIGHT_VISION, 15 * 20));
+                null,
+                null);
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -706,8 +709,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 true,
                 false,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * 20, 1));
+                null,
+                null);
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -717,8 +720,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 true,
                 false,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * 20));
+                null,
+                null);
 
         machineRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
@@ -729,24 +732,24 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 true,
                 true,
                 ItemRegister.mug.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.DIG_SPEED, 60 * 20, 1));
+                null,
+                null);
 
 
         pressRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
                 Items.WATER_BUCKET,
                 ItemRegister.americanCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 15 * 20)
+                null,
+                null
         );
 
         pressRecipe(pFinishedRecipeConsumer,
                 ItemRegister.coffeePowder.get(),
                 ItemRegister.americanCoffee.get(),
                 ItemRegister.expressoCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.DIG_SPEED, 15 * 20)
+                null,
+                null
         );
 
         pressRecipe(pFinishedRecipeConsumer,
@@ -754,8 +757,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 ItemRegister.coffeePowder.get(),
                 Items.WATER_BUCKET,
                 ItemRegister.doppioCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 15 * 20, 1)
+                null,
+                null
         );
 
         pressRecipe(pFinishedRecipeConsumer,
@@ -763,8 +766,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 Items.MILK_BUCKET,
                 Items.SUGAR,
                 ItemRegister.macchiatoCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.ABSORPTION, 15 * 20, 1)
+                null,
+                null
         );
 
         pressRecipe(pFinishedRecipeConsumer,
@@ -772,8 +775,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 Items.MILK_BUCKET,
                 ItemRegister.cocoaPowder.get(),
                 ItemRegister.mochaCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.REGENERATION, 15 * 20, 1)
+                null,
+                null
         );
 
         pressRecipe(pFinishedRecipeConsumer,
@@ -781,8 +784,8 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 Items.MILK_BUCKET,
                 Items.SUGAR,
                 ItemRegister.latteCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.DIG_SPEED, 15 * 20)
+                null,
+                null
         );
 
         pressRecipe(pFinishedRecipeConsumer,
@@ -790,12 +793,12 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 Items.MILK_BUCKET,
                 ItemRegister.cocoaPowder.get(),
                 ItemRegister.cappuccinoCoffee.get().getDefaultInstance(),
-                new MobEffectInstance(EffectRegister.kawaiiEffect.get(), 15 * 20),
-                new MobEffectInstance(MobEffects.DIG_SPEED, 30 * 20, 1)
+                null,
+                null
         );
     }
 
-    public void machineRecipe(Consumer<FinishedRecipe> consumer, Item item, Item item1, Item item2, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
+    public void machineRecipe(RecipeOutput consumer, Item item, Item item1, Item item2, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
         CoffeeMachineRecipeBuilder builder = new CoffeeMachineRecipeBuilder(
                 item,
                 item1,
@@ -812,7 +815,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void machineRecipe(Consumer<FinishedRecipe> consumer, Item item, Item item1, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
+    public void machineRecipe(RecipeOutput consumer, Item item, Item item1, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
         CoffeeMachineRecipeBuilder builder = new CoffeeMachineRecipeBuilder(
                 item,
                 item1,
@@ -828,7 +831,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void machineRecipe(Consumer<FinishedRecipe> consumer, Item item, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
+    public void machineRecipe(RecipeOutput consumer, Item item, ItemStack result, int ticks, boolean needWater, boolean needMilk, ItemStack onOutput, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
         CoffeeMachineRecipeBuilder builder = new CoffeeMachineRecipeBuilder(
                 item,
                 result,
@@ -845,7 +848,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
     }
 
 
-    public void pressRecipe(Consumer<FinishedRecipe> consumer, Item item, Item item1, Item item2, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
+    public void pressRecipe(RecipeOutput consumer, Item item, Item item1, Item item2, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
         CoffeePressRecipeBuilder builder = new CoffeePressRecipeBuilder(
                 item,
                 item1,
@@ -858,7 +861,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void pressRecipe(Consumer<FinishedRecipe> consumer, Item item, Item item1, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
+    public void pressRecipe(RecipeOutput consumer, Item item, Item item1, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
         CoffeePressRecipeBuilder builder = new CoffeePressRecipeBuilder(
                 item,
                 item1,
@@ -870,7 +873,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         builder.save(consumer);
     }
 
-    public void pressRecipe(Consumer<FinishedRecipe> consumer, Item item, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
+    public void pressRecipe(RecipeOutput consumer, Item item, ItemStack result, MobEffectInstance mainEffect, MobEffectInstance secondaryEffect) {
         CoffeePressRecipeBuilder builder = new CoffeePressRecipeBuilder(
                 item,
                 result,
@@ -881,7 +884,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
 
         builder.save(consumer);
     }
-    public void maidOutfitUncrafts(Consumer<FinishedRecipe> consumer, String color) {
+    public void maidOutfitUncrafts(RecipeOutput consumer, String color) {
         for (var i : ItemRegister.ITEMS.getEntries().stream().toList()) {
             var path = BuiltInRegistries.ITEM.getKey(i.get()).toString().replaceAll(KawaiiDishes.modId+":","");
             if(path.equals(color+"_maid_dress_cat_tail_black")){
@@ -966,37 +969,37 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
 
     }
 
-    public void roasting(Consumer<FinishedRecipe> consumer, Item stage1, Item stage2, Item stage3) {
-        simpleCookingRecipe(consumer, "smelting", SimpleCookingSerializer.SMELTING_RECIPE, 200, stage1, stage2, 0.12f);
-        simpleCookingRecipe(consumer, "smoking", SimpleCookingSerializer.SMOKING_RECIPE, 100, stage1, stage2, 0.12f);
+    public void roasting(RecipeOutput consumer, Item stage1, Item stage2, Item stage3) {
+        simpleCookingRecipe(consumer, "smelting", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200, stage1, stage2, 0.12f);
+        simpleCookingRecipe(consumer, "smoking", RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new, 100, stage1, stage2, 0.12f);
 
-        simpleCookingRecipe(consumer, "smelting", SimpleCookingSerializer.SMELTING_RECIPE, 200, stage2, stage3, 0.12f);
-        simpleCookingRecipe(consumer, "smoking", SimpleCookingSerializer.SMOKING_RECIPE, 100, stage2, stage3, 0.12f);
+        simpleCookingRecipe(consumer, "smelting", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200, stage2, stage3, 0.12f);
+        simpleCookingRecipe(consumer, "smoking", RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new, 100, stage2, stage3, 0.12f);
 
     }
 
-    public void catTails(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void catTails(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("  #")
                 .pattern("s##")
                 .pattern("ss ")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
 
-    public void devilTails(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void devilTails(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("  #")
                 .pattern("#s#")
                 .pattern("s# ")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
-    public void smallHorns(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void smallHorns(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
@@ -1004,7 +1007,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .save(consumer);
     }
 
-    public void bigHorn(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void bigHorn(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("h h")
                 .pattern("# #")
@@ -1014,30 +1017,30 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .save(consumer);
     }
 
-    public void bunnyTails(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void bunnyTails(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("   ")
                 .pattern("s##")
                 .pattern("ss ")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
 
-    public void foxTails(Consumer<FinishedRecipe> consumer, Item result, Item item, Item item2) {
+    public void foxTails(RecipeOutput consumer, Item result, Item item, Item item2) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern(" #x")
                 .pattern("s##")
                 .pattern("ss ")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
                 .define('x', Ingredient.of(item2.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
 
-    public void thighHighs(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void thighHighs(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .pattern("# #")
@@ -1048,7 +1051,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
     }
 
 
-    public void shoes(Consumer<FinishedRecipe> consumer, Item result, Item item, Item item2) {
+    public void shoes(RecipeOutput consumer, Item result, Item item, Item item2) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .pattern("s s")
@@ -1059,38 +1062,38 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .save(consumer);
     }
 
-    public void catEars(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void catEars(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("#s#")
                 .pattern("s s")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
-    public void bunnyEars(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void bunnyEars(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .pattern("x x")
                 .pattern("sss")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
                 .define('x', Ingredient.of(Items.WHITE_WOOL))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
-    public void foxEars(Consumer<FinishedRecipe> consumer, Item result, Item item) {
+    public void foxEars(RecipeOutput consumer, Item result, Item item) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .pattern("#s#")
                 .pattern("s s")
                 .define('#', Ingredient.of(item.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(item), has(item))
                 .save(consumer);
     }
 
-    public void bunnySuit(Consumer<FinishedRecipe> consumer, Item result, Item mainColor, Item secondaryColor) {
+    public void bunnySuit(RecipeOutput consumer, Item result, Item mainColor, Item secondaryColor) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .pattern("#@#")
@@ -1101,7 +1104,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .unlockedBy(getHasName(secondaryColor), has(secondaryColor))
                 .save(consumer);
     }
-    public void bunnySuitSocks(Consumer<FinishedRecipe> consumer, Item result) {
+    public void bunnySuitSocks(RecipeOutput consumer, Item result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("###")
                 .pattern("# #")
@@ -1111,20 +1114,20 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
                 .save(consumer);
     }
 
-    public void maidOutfit(Consumer<FinishedRecipe> consumer, Item result, Item mainColor, Item secondaryColor) {
+    public void maidOutfit(RecipeOutput consumer, Item result, Item mainColor, Item secondaryColor) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("# #")
                 .pattern("s#s")
                 .pattern("@@@")
                 .define('#', Ingredient.of(mainColor.getDefaultInstance()))
                 .define('@', Ingredient.of(secondaryColor.getDefaultInstance()))
-                .define('s', Ingredient.of(Tags.Items.STRING))
+                .define('s', Ingredient.of(Tags.Items.STRINGS))
                 .unlockedBy(getHasName(mainColor), has(mainColor))
                 .unlockedBy(getHasName(secondaryColor), has(secondaryColor))
                 .save(consumer);
     }
 
-    public void headBands(Consumer<FinishedRecipe> consumer, Item result, Item mainColor, Item secondaryColor) {
+    public void headBands(RecipeOutput consumer, Item result, Item mainColor, Item secondaryColor) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("###")
                 .pattern("@ @")
@@ -1244,7 +1247,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         }
     }
 
-    public void headBandsUncraft(Consumer<FinishedRecipe> consumer, String color) {
+    public void headBandsUncraft(RecipeOutput consumer, String color) {
         for (var i : ItemRegister.ITEMS.getEntries().stream().toList()) {
             var path = BuiltInRegistries.ITEM.getKey(i.get()).toString().replaceAll(KawaiiDishes.modId+":","");
             if(path.equals(color+"_headband_cat_ears_black")){
@@ -1346,7 +1349,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         }
     }
 
-    public void maidOutfitVariations(Consumer<FinishedRecipe> consumer, Item result) {
+    public void maidOutfitVariations(RecipeOutput consumer, Item result) {
         for (var i : ItemRegister.ITEMS.getEntries().stream().toList()) {
             var path = BuiltInRegistries.ITEM.getKey(i.get()).toString().replaceAll(KawaiiDishes.modId+":","");
             if (path.equals(result.toString() + "_cat_tail_black")) {
@@ -1444,7 +1447,7 @@ public class CraftingRecipeSupplier extends RecipeProvider implements ICondition
         }
     }
 
-    public void stool(Consumer<FinishedRecipe> consumer, Item result, Item mainColor) {
+    public void stool(RecipeOutput consumer, Item result, Item mainColor) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,result)
                 .pattern("#s#")
                 .pattern("| |")

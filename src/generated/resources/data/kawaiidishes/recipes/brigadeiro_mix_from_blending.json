@@ -12,8 +12,7 @@
   ],
   "output": {
     "count": 4,
-    "item": "kawaiidishes:brigadeiro_mix",
-    "nbt": "{}"
+    "id": "kawaiidishes:brigadeiro_mix"
   },
   "ticks": 100
 }

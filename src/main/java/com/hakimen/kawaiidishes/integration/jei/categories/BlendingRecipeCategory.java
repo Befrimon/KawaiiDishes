@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nonnull;
 
 public class BlendingRecipeCategory implements IRecipeCategory<BlenderRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(KawaiiDishes.modId, "blending");
+    public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "blending");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(KawaiiDishes.modId, "textures/integration/jei/blender_gui.png");
+            ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "textures/integration/jei/blender_gui.png");
 
     private final IDrawable background;
     private final IDrawable icon;

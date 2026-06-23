@@ -2,10 +2,11 @@ package com.hakimen.kawaiidishes.blocks;
 
 import com.hakimen.kawaiidishes.blocks.block_entities.CoffeePressBlockEntity;
 import com.hakimen.kawaiidishes.registry.ItemRegister;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,8 +31,15 @@ import javax.annotation.Nonnull;
 public class CoffeePressBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty PRESSED = BooleanProperty.create("pressed");
+    private static final MapCodec<CoffeePressBlock> CODEC = simpleCodec(props -> new CoffeePressBlock());
+
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
+
     public CoffeePressBlock() {
-        super(Properties.copy(Blocks.WHITE_WOOL).strength(2f,2f)
+        super(Properties.ofFullCopy(Blocks.WHITE_WOOL).strength(2f,2f)
                 .sound(SoundType.GLASS));
         registerDefaultState( getStateDefinition().any()
                 .setValue(FACING, Direction.NORTH )
@@ -91,11 +99,10 @@ public class CoffeePressBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
         if(blockEntity instanceof CoffeePressBlockEntity coffeePress){
-            ItemStack currentItemInHand = pPlayer.getItemInHand(pHand).copy();
-            if(currentItemInHand.equals(ItemStack.EMPTY)){
+            if(pStack.isEmpty()){
                 if(pPlayer.isCrouching()){
                     for (int i = coffeePress.inventory.getSlots()-1; i > -1; i--) {
                         if(coffeePress.inventory.getStackInSlot(i) != ItemStack.EMPTY){
@@ -106,7 +113,7 @@ public class CoffeePressBlock extends Block implements EntityBlock {
                 }else if(CoffeePressBlockEntity.hasRecipe(coffeePress)){
                     CoffeePressBlockEntity.craft(coffeePress);
                 }
-            }else if(currentItemInHand.getItem().equals(ItemRegister.mug.get()) && coffeePress.coffeeGotMade){
+            }else if(pStack.getItem().equals(ItemRegister.mug.get()) && coffeePress.coffeeGotMade){
                 if(coffeePress.coffeeMade.getCount() > 0){
                     pPlayer.addItem(coffeePress.coffeeMade);
                     coffeePress.coffeeGotMade = false;
@@ -120,15 +127,15 @@ public class CoffeePressBlock extends Block implements EntityBlock {
                     ));
 
                 }
-                pPlayer.getItemInHand(pHand).shrink(1);
+                pStack.shrink(1);
 
             }else if(coffeePress.inventory.getStackInSlot(0).getCount() < 3){
-                var stack = currentItemInHand.copy();
+                var stack = pStack.copy();
                 stack.setCount(1);
                 for (int i = 0; i < coffeePress.inventory.getSlots(); i++) {
                     if(coffeePress.inventory.getStackInSlot(i) == ItemStack.EMPTY){
                         coffeePress.inventory.insertItem(i,stack,false);
-                        pPlayer.getItemInHand(pHand).shrink(1);
+                        pStack.shrink(1);
                         break;
                     }
                 }
@@ -137,6 +144,6 @@ public class CoffeePressBlock extends Block implements EntityBlock {
         }
 
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 }

@@ -6,7 +6,7 @@
       "item": "minecraft:black_wool"
     },
     "s": {
-      "tag": "forge:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "s s"
   ],
   "result": {
-    "item": "kawaiidishes:black_fox_ears"
+    "id": "kawaiidishes:black_fox_ears"
   },
   "show_notification": true
 }

@@ -20,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nonnull;
 
 public class CoffeePressRecipeCategory implements IRecipeCategory<CoffeePressRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(KawaiiDishes.modId, "coffee_pressing");
+    public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "coffee_pressing");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(KawaiiDishes.modId, "textures/integration/jei/coffee_press_gui.png");
+            ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "textures/integration/jei/coffee_press_gui.png");
 
     private final IDrawable background;
     private final IDrawable icon;

@@ -1,5 +1,8 @@
 package com.hakimen.kawaiidishes.items;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -12,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,25 +26,35 @@ public class UnbindingCookie extends Item {
         super(pProperties);
     }
 
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(pStack.getOrCreateTag().getBoolean("activated")){
-            pTooltipComponents.add(Component.translatable("item.kawaiidishes.cookie_of_unbinding.active.desc"));
+    private boolean isActivated(ItemStack pStack) {
+        return pStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("activated");
+    }
 
-        }else {
+    private boolean hasBindingCurse(ItemStack stack) {
+        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
+        return enchantments.entrySet().stream()
+                .anyMatch(e -> e.getKey().is(Enchantments.BINDING_CURSE));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        if (isActivated(pStack)) {
+            pTooltipComponents.add(Component.translatable("item.kawaiidishes.cookie_of_unbinding.active.desc"));
+        } else {
             pTooltipComponents.add(Component.translatable("item.kawaiidishes.cookie_of_unbinding.unactive.desc"));
             pTooltipComponents.add(Component.translatable("item.kawaiidishes.cookie_of_unbinding.unactive.subdesc").setStyle(
                     Style.EMPTY.withColor(0x888888)
             ));
         }
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pIsAdvanced);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
-        for (EquipmentSlot slot:EquipmentSlot.values()) {
-            if(pLivingEntity instanceof Player p && !p.getInventory().isEmpty()){
-                if(EnchantmentHelper.hasBindingCurse(p.getItemBySlot(slot)) && pStack.getOrCreateTag().getBoolean("activated")) {
+        boolean activated = isActivated(pStack);
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (pLivingEntity instanceof Player p && !p.getInventory().isEmpty()) {
+                if (hasBindingCurse(p.getItemBySlot(slot)) && activated) {
                     pLevel.addFreshEntity(new ItemEntity(
                             pLevel,
                             p.getX(),
@@ -48,19 +62,18 @@ public class UnbindingCookie extends Item {
                             p.getZ(),
                             p.getItemBySlot(slot)));
                     p.setItemSlot(slot, ItemStack.EMPTY);
-                    p.addEffect(new MobEffectInstance(MobEffects.CONFUSION,20*8,1));
-                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,20*5));
+                    p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 20 * 8, 1));
+                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * 5));
                 }
             }
-            if(pLivingEntity instanceof Player p && p.getInventory().isEmpty() ){
-                if(EnchantmentHelper.hasBindingCurse(p.getItemBySlot(slot)) && pStack.getOrCreateTag().getBoolean("activated")) {
+            if (pLivingEntity instanceof Player p && p.getInventory().isEmpty()) {
+                if (hasBindingCurse(p.getItemBySlot(slot)) && activated) {
                     p.addItem(p.getItemBySlot(slot));
                     p.setItemSlot(slot, ItemStack.EMPTY);
-                    p.addEffect(new MobEffectInstance(MobEffects.CONFUSION,20*8,1));
-                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,20*5));
+                    p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 20 * 8, 1));
+                    p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * 5));
                 }
             }
-
         }
         pStack.shrink(1);
         return pStack;
@@ -68,14 +81,13 @@ public class UnbindingCookie extends Item {
 
     @Override
     public void onCraftedBy(ItemStack pStack, Level pLevel, Player pPlayer) {
-
-        for (EquipmentSlot slot: EquipmentSlot.values()){
-            if(EnchantmentHelper.hasBindingCurse(pPlayer.getItemBySlot(slot))){
-                pStack.getOrCreateTag().putBoolean("activated", true);
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (hasBindingCurse(pPlayer.getItemBySlot(slot))) {
+                CustomData.update(DataComponents.CUSTOM_DATA, pStack, tag -> tag.putBoolean("activated", true));
                 return;
             }
         }
-        pStack.getOrCreateTag().putBoolean("activated", false);
+        CustomData.update(DataComponents.CUSTOM_DATA, pStack, tag -> tag.putBoolean("activated", false));
         super.onCraftedBy(pStack, pLevel, pPlayer);
     }
 }

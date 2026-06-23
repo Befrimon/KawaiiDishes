@@ -6,7 +6,7 @@
       "item": "minecraft:white_wool"
     },
     "s": {
-      "tag": "forge:string"
+      "tag": "c:strings"
     },
     "x": {
       "item": "minecraft:white_wool"
@@ -18,7 +18,7 @@
     "ss "
   ],
   "result": {
-    "item": "kawaiidishes:white_fox_tail"
+    "id": "kawaiidishes:white_fox_tail"
   },
   "show_notification": true
 }

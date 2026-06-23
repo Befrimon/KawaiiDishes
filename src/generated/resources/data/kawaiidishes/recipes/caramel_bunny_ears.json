@@ -6,7 +6,7 @@
       "item": "minecraft:yellow_wool"
     },
     "s": {
-      "tag": "forge:string"
+      "tag": "c:strings"
     },
     "x": {
       "item": "minecraft:white_wool"
@@ -18,7 +18,7 @@
     "sss"
   ],
   "result": {
-    "item": "kawaiidishes:caramel_bunny_ears"
+    "id": "kawaiidishes:caramel_bunny_ears"
   },
   "show_notification": true
 }

@@ -3,7 +3,8 @@ package com.hakimen.kawaiidishes.blocks;
 import com.hakimen.kawaiidishes.blocks.block_entities.PlaceableFoodBlockEntity;
 import com.hakimen.kawaiidishes.registry.BlockEntityRegister;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,30 +24,31 @@ import org.jetbrains.annotations.Nullable;
 
 public class MugWithCoffeeBlock extends MugBlock implements EntityBlock {
     public MugWithCoffeeBlock(){
-        super(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
                 .sound(SoundType.STONE)
                 .strength(1,1));
     }
 
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if(pPlayer.isCrouching()){
             var stack = this.asItem().getDefaultInstance();
-            stack.getOrCreateTag();
             if(pLevel.getBlockEntity(pPos) instanceof PlaceableFoodBlockEntity entity){
-                if(!entity.mainEffect.equals(new CompoundTag())){
-                    stack.getOrCreateTag().put("mainEffect",entity.mainEffect);
-                }
-                if(!entity.secondaryEffect.equals(new CompoundTag())){
-                    stack.getOrCreateTag().put("secondaryEffect",entity.secondaryEffect);
-                }
+                CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+                    if(!entity.mainEffect.equals(new net.minecraft.nbt.CompoundTag())){
+                        tag.put("mainEffect",entity.mainEffect);
+                    }
+                    if(!entity.secondaryEffect.equals(new net.minecraft.nbt.CompoundTag())){
+                        tag.put("secondaryEffect",entity.secondaryEffect);
+                    }
+                });
             }
             pLevel.removeBlock(pPos,false);
             pPlayer.addItem(stack);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return InteractionResult.PASS;
     }
 
     @Nullable
@@ -59,7 +61,10 @@ public class MugWithCoffeeBlock extends MugBlock implements EntityBlock {
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         pLevel.getBlockEntity(pPos, BlockEntityRegister.placeableFood.get()).ifPresent((a) -> {
-            a.load(pStack.getOrCreateTag());
+            CustomData customData = pStack.get(DataComponents.CUSTOM_DATA);
+            if (customData != null) {
+                a.loadCustomOnly(customData.copyTag(), pLevel.registryAccess());
+            }
         });
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
@@ -67,14 +72,15 @@ public class MugWithCoffeeBlock extends MugBlock implements EntityBlock {
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         var stack = this.asItem().getDefaultInstance();
-        stack.getOrCreateTag();
         if(level.getBlockEntity(pos) instanceof PlaceableFoodBlockEntity entity){
-            if(!entity.mainEffect.equals(new CompoundTag())){
-                stack.getOrCreateTag().put("mainEffect",entity.mainEffect);
-            }
-            if(!entity.secondaryEffect.equals(new CompoundTag())){
-                stack.getOrCreateTag().put("secondaryEffect",entity.secondaryEffect);
-            }
+            CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+                if(!entity.mainEffect.equals(new net.minecraft.nbt.CompoundTag())){
+                    tag.put("mainEffect",entity.mainEffect);
+                }
+                if(!entity.secondaryEffect.equals(new net.minecraft.nbt.CompoundTag())){
+                    tag.put("secondaryEffect",entity.secondaryEffect);
+                }
+            });
         }
         level.addFreshEntity(new ItemEntity(level,pos.getX(),pos.getY(),pos.getZ(),stack));
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);

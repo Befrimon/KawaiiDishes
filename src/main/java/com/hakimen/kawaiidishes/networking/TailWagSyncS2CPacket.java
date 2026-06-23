@@ -2,35 +2,41 @@ package com.hakimen.kawaiidishes.networking;
 
 import com.hakimen.kawaiidishes.client.data.ClientTailWagData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
-public class TailWagSyncS2CPacket {
+public class TailWagSyncS2CPacket implements CustomPacketPayload {
+    public static final Type<TailWagSyncS2CPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath("kawaiidishes", "tail_wag_sync_s2c"));
+
+    public static final StreamCodec<FriendlyByteBuf, TailWagSyncS2CPacket> STREAM_CODEC = StreamCodec.of(
+            (buf, pkt) -> {
+                buf.writeBoolean(pkt.isWagging);
+                buf.writeUUID(pkt.uuid);
+            },
+            (buf) -> new TailWagSyncS2CPacket(buf.readBoolean(), buf.readUUID())
+    );
 
     private final boolean isWagging;
     private final UUID uuid;
+
     public TailWagSyncS2CPacket(boolean isWagging, UUID uuid) {
         this.isWagging = isWagging;
         this.uuid = uuid;
     }
 
-    public TailWagSyncS2CPacket(FriendlyByteBuf buff){
-        this.isWagging = buff.readBoolean();
-        this.uuid = buff.readUUID();
+    public boolean isWagging() {
+        return isWagging;
     }
 
-    public void toBytes(FriendlyByteBuf buff){
-        buff.writeBoolean(this.isWagging);
-        buff.writeUUID(this.uuid);
+    public UUID uuid() {
+        return uuid;
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier){
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(()->{
-            ClientTailWagData.setState(uuid,isWagging);
-        });
-        return true;
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

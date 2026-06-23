@@ -5,24 +5,30 @@ import com.hakimen.kawaiidishes.client.block_entity_renderers.CoffeePressRendere
 import com.hakimen.kawaiidishes.client.block_entity_renderers.IceCreamMachineRenderer;
 import com.hakimen.kawaiidishes.client.entity.SeatRenderer;
 import com.hakimen.kawaiidishes.registry.BlockEntityRegister;
+import com.hakimen.kawaiidishes.registry.ContainerRegister;
 import com.hakimen.kawaiidishes.registry.EntityRegister;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
-@Mod.EventBusSubscriber(modid = KawaiiDishes.modId, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = KawaiiDishes.modId, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class KawaiiDishesClient {
-    @SubscribeEvent
-    public static void registerArmorRenderers(final EntityRenderersEvent.AddLayers event) {
 
-    }
     @SubscribeEvent
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event){
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BlockEntityRegister.coffeePress.get(), CoffeePressRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegister.coffeeMachine.get(), CoffeeMachineRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegister.iceCreamMachine.get(), IceCreamMachineRenderer::new);
 
         event.registerEntityRenderer(EntityRegister.SEAT.get(), SeatRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(ContainerRegister.coffeeMachine.get(), com.hakimen.kawaiidishes.client.screens.CoffeeMachineScreen::new);
+        event.register(ContainerRegister.iceCreamMachine.get(), com.hakimen.kawaiidishes.client.screens.IceCreamScreen::new);
+        event.register(ContainerRegister.blenderContainer.get(), com.hakimen.kawaiidishes.client.screens.BlenderScreen::new);
     }
 }

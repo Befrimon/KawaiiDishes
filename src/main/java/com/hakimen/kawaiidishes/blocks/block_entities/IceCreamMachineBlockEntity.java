@@ -2,11 +2,13 @@ package com.hakimen.kawaiidishes.blocks.block_entities;
 
 import com.hakimen.kawaiidishes.containers.IceCreamMachineContainer;
 import com.hakimen.kawaiidishes.recipes.IceCreamMachineRecipe;
+import com.hakimen.kawaiidishes.recipes.ContainerRecipeInput;
 import com.hakimen.kawaiidishes.registry.BlockEntityRegister;
 import com.hakimen.kawaiidishes.registry.ItemRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -24,12 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -38,7 +35,6 @@ import java.util.Optional;
 public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvider, BlockEntityTicker<IceCreamMachineBlockEntity> {
 
     public final ItemStackHandler inventory = createHandler();
-    private final LazyOptional<IItemHandler> invHandler = LazyOptional.of(() -> inventory);
     public int progress = 0;
     public int recipeTicks = 0;
 
@@ -78,32 +74,32 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        pTag.merge(this.inventory.serializeNBT());
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+        pTag.merge(this.inventory.serializeNBT(registries));
         pTag.putInt("progress", progress);
         pTag.putInt("recipeTicks", recipeTicks);
         pTag.putBoolean("isCrafting", isCrafting);
-        super.saveAdditional(pTag);
+        super.saveAdditional(pTag, registries);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+        super.loadAdditional(pTag, registries);
         progress = pTag.getInt("progress");
         recipeTicks = pTag.getInt("recipeTicks");
         isCrafting = pTag.getBoolean("isCrafting");
-        this.inventory.deserializeNBT(pTag);
+        this.inventory.deserializeNBT(registries, pTag);
     }
 
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this, BlockEntity::saveWithFullMetadata);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithFullMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithFullMetadata(registries);
     }
 
     public static boolean hasRecipe(IceCreamMachineBlockEntity entity) {
@@ -115,14 +111,13 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
             }
         }
         Optional<IceCreamMachineRecipe> match = level.getRecipeManager()
-                .getRecipeFor(IceCreamMachineRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(IceCreamMachineRecipe.Type.INSTANCE, new ContainerRecipeInput(inventory), level)
+                .map(holder -> holder.value());
         return match.isPresent();
     }
 
-
     @Override
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, IceCreamMachineBlockEntity pBlockEntity) {
-
         if (hasRecipe(pBlockEntity)) {
             Level level = pBlockEntity.level;
             SimpleContainer inventory = new SimpleContainer(pBlockEntity.inventory.getSlots());
@@ -132,7 +127,8 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
                 }
             }
             Optional<IceCreamMachineRecipe> match = level.getRecipeManager()
-                    .getRecipeFor(IceCreamMachineRecipe.Type.INSTANCE, inventory, level);
+                    .getRecipeFor(IceCreamMachineRecipe.Type.INSTANCE, new ContainerRecipeInput(inventory), level)
+                    .map(holder -> holder.value());
             if (match.isPresent()) {
                 IceCreamMachineRecipe recipe = match.get();
                 if (!isCrafting) {
@@ -141,8 +137,6 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
                     setChanged();
                 } else {
                     this.progress++;
-
-
                     setChanged();
                     if (progress >= recipeTicks) {
                         isCrafting = false;
@@ -150,14 +144,13 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
                         for (int i = 0; i < pBlockEntity.inventory.getSlots() - 1; i++) {
                             if (i == 1 || i == 2 || i == 3) {
                                 var stack = pBlockEntity.inventory.getStackInSlot(i).getCraftingRemainingItem();
-                                pBlockEntity.inventory.extractItem(i,1,false);
+                                pBlockEntity.inventory.extractItem(i, 1, false);
                                 if (!stack.equals(ItemStack.EMPTY)) {
                                     pBlockEntity.inventory.setStackInSlot(i, stack);
                                 }
                             } else {
                                 pBlockEntity.inventory.getStackInSlot(i).shrink(1);
                             }
-
                         }
                         pBlockEntity.inventory.setStackInSlot(4, recipe.getResultItem(null));
                         setChanged();
@@ -168,17 +161,6 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
             progress--;
         }
         setChanged();
-
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return (LazyOptional<T>) invHandler;
-        } else {
-            return super.getCapability(cap,side);
-        }
     }
 
     private ItemStackHandler createHandler() {
@@ -186,7 +168,9 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
+                if (level != null) {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
+                }
             }
 
             @Override
@@ -205,7 +189,6 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
                 return false;
             }
 
-
             @Override
             public int getSlotLimit(int slot) {
                 return slot == 4 ? 1 : 64;
@@ -217,12 +200,10 @@ public class IceCreamMachineBlockEntity extends BlockEntity implements MenuProvi
                 if (!isItemValid(slot, stack)) {
                     return stack;
                 }
-
                 return super.insertItem(slot, stack, simulate);
             }
         };
     }
-
 
     @Override
     public Component getDisplayName() {

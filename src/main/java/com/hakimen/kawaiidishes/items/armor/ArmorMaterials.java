@@ -1,138 +1,56 @@
 package com.hakimen.kawaiidishes.items.armor;
 
-import net.minecraft.sounds.SoundEvent;
+import com.hakimen.kawaiidishes.KawaiiDishes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class ArmorMaterials {
-    public static ArmorMaterial tail = new ArmorMaterial() {
-        @Override
-        public int getDurabilityForType(ArmorItem.Type pSlot) {
-            return -1;
-        }
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, KawaiiDishes.modId);
 
-        @Override
-        public int getDefenseForType(ArmorItem.Type pSlot) {
-            return 2;
-        }
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> tail = ARMOR_MATERIALS.register("tail",
+            () -> new ArmorMaterial(
+                    Map.of(),
+                    0,
+                    SoundEvents.ARMOR_EQUIP_LEATHER,
+                    () -> Ingredient.EMPTY,
+                    List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "tail"))),
+                    0,
+                    0
+            ));
 
-        @Override
-        public int getEnchantmentValue() {
-            return 0;
-        }
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> maidDress = ARMOR_MATERIALS.register("maid_dress",
+            () -> new ArmorMaterial(
+                    Map.of(),
+                    0,
+                    SoundEvents.ARMOR_EQUIP_LEATHER,
+                    () -> Ingredient.EMPTY,
+                    List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "maid_dress"))),
+                    0,
+                    0
+            ));
 
-        @Override
-        public SoundEvent getEquipSound() {
-            return SoundEvents.ARMOR_EQUIP_LEATHER;
-        }
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> tailedDress = ARMOR_MATERIALS.register("tailed_maid_dress",
+            () -> new ArmorMaterial(
+                    Map.of(),
+                    0,
+                    SoundEvents.ARMOR_EQUIP_LEATHER,
+                    () -> Ingredient.EMPTY,
+                    List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "tailed_maid_dress"))),
+                    0,
+                    0
+            ));
 
-        @Override
-        public Ingredient getRepairIngredient() {
-            return null;
-        }
-
-        @Override
-        public String getName() {
-            return "tail";
-        }
-
-        @Override
-        public float getToughness() {
-            return 0;
-        }
-
-        @Override
-        public float getKnockbackResistance() {
-            return 0;
-        }};
-    public static ArmorMaterial maidDress = new ArmorMaterial() {
-        @Override
-        public int getDurabilityForType(ArmorItem.Type pSlot) {
-            return -1;
-        }
-
-        @Override
-        public int getDefenseForType(ArmorItem.Type pSlot) {
-            switch (pSlot){
-                case CHESTPLATE:
-                    return 4;
-                case LEGGINGS:
-                    return 2;
-                case BOOTS:
-                    return 1;
-            }
-            return 3;
-        }
-
-        @Override
-        public int getEnchantmentValue() {
-            return 0;
-        }
-
-        @Override
-        public SoundEvent getEquipSound() {
-            return SoundEvents.ARMOR_EQUIP_LEATHER;
-        }
-
-        @Override
-        public Ingredient getRepairIngredient() {
-            return null;
-        }
-
-        @Override
-        public String getName() {
-            return "maid_dress";
-        }
-
-        @Override
-        public float getToughness() {
-            return 0;
-        }
-
-        @Override
-        public float getKnockbackResistance() {
-            return 0;
-        }};
-    public static ArmorMaterial tailedDress = new ArmorMaterial() {
-        @Override
-        public int getDurabilityForType(ArmorItem.Type pSlot) {
-            return -1;
-        }
-
-        @Override
-        public int getDefenseForType(ArmorItem.Type pSlot) {
-            return 6;
-        }
-
-        @Override
-        public int getEnchantmentValue() {
-            return 0;
-        }
-
-        @Override
-        public SoundEvent getEquipSound() {
-            return SoundEvents.ARMOR_EQUIP_LEATHER;
-        }
-
-        @Override
-        public Ingredient getRepairIngredient() {
-            return null;
-        }
-
-        @Override
-        public String getName() {
-            return "tailed_maid_dress";
-        }
-
-        @Override
-        public float getToughness() {
-            return 0;
-        }
-
-        @Override
-        public float getKnockbackResistance() {
-            return 0;
-        }};
+    public static void register(IEventBus bus) {
+        ARMOR_MATERIALS.register(bus);
+    }
 }

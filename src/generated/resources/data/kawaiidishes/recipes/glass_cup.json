@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "x": {
-      "tag": "forge:glass_panes"
+      "tag": "c:glass_panes"
     }
   },
   "pattern": [
@@ -11,7 +11,7 @@
     "xxx"
   ],
   "result": {
-    "item": "kawaiidishes:glass_cup"
+    "id": "kawaiidishes:glass_cup"
   },
   "show_notification": true
 }

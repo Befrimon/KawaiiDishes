@@ -7,8 +7,7 @@
   ],
   "output": {
     "count": 4,
-    "item": "kawaiidishes:cream_cheese",
-    "nbt": "{}"
+    "id": "kawaiidishes:cream_cheese"
   },
   "ticks": 100
 }

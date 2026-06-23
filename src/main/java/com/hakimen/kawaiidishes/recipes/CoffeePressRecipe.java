@@ -1,49 +1,48 @@
 package com.hakimen.kawaiidishes.recipes;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.hakimen.kawaiidishes.KawaiiDishes;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public class CoffeePressRecipe implements Recipe<SimpleContainer> {
+public class CoffeePressRecipe implements Recipe<ContainerRecipeInput> {
 
-    private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> recipeItems;
 
-    public CoffeePressRecipe(ResourceLocation id, ItemStack output,
+    public CoffeePressRecipe(ItemStack output,
                                    NonNullList<Ingredient> recipeItems) {
-        this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, Level pLevel) {
+    public boolean matches(ContainerRecipeInput pContainer, Level pLevel) {
         var matches = new boolean[]{
                 true,true,true
         };
         for (int i = 0; i < recipeItems.get(0).getItems().length; i++) {
-            matches[i] = recipeItems.get(0).getItems()[i].getItem().equals(pContainer.getItem(i).getItem());
+            matches[i] = recipeItems.get(0).getItems()[i].getItem().equals(pContainer.container().getItem(i).getItem());
         }
         return (matches[0]&&matches[1]&&matches[2]);
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess p_267165_) {
+    public ItemStack assemble(ContainerRecipeInput pContainer, HolderLookup.Provider registries) {
         return output;
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
         return output.copy();
     }
     @Override
@@ -51,16 +50,9 @@ public class CoffeePressRecipe implements Recipe<SimpleContainer> {
         return true;
     }
 
-
-
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return recipeItems;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     @Override
@@ -75,51 +67,34 @@ public class CoffeePressRecipe implements Recipe<SimpleContainer> {
     public static class Type implements RecipeType<CoffeePressRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "coffee_pressing";
     }
 
     public static class Serializer implements RecipeSerializer<CoffeePressRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID =
-                new ResourceLocation(KawaiiDishes.modId,"coffee_pressing");
+
+        private static final Codec<NonNullList<Ingredient>> INGREDIENTS_CODEC = Codec.list(Ingredient.CODEC)
+                .xmap(NonNullList::copyOf, NonNullList::copyOf);
+
+        private static final MapCodec<CoffeePressRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+                ItemStack.CODEC.fieldOf("output").forGetter(r -> r.output),
+                INGREDIENTS_CODEC.fieldOf("ingredients").forGetter(r -> r.recipeItems)
+        ).apply(inst, CoffeePressRecipe::new));
+
+        private static final StreamCodec<RegistryFriendlyByteBuf, CoffeePressRecipe> STREAM_CODEC = StreamCodec.composite(
+                ItemStack.STREAM_CODEC, r -> r.output,
+                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.collection(NonNullList::createWithCapacity)),
+                r -> r.recipeItems,
+                CoffeePressRecipe::new
+        );
 
         @Override
-        public CoffeePressRecipe fromJson(ResourceLocation id, JsonObject json) {
-            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
-
-            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(3, Ingredient.EMPTY);
-
-            for (int i = 0; i < ingredients.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            return new CoffeePressRecipe(id, output, inputs);
+        public MapCodec<CoffeePressRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public CoffeePressRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf));
-            }
-
-            ItemStack output = buf.readItem();
-            return new CoffeePressRecipe(id, output, inputs);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, CoffeePressRecipe recipe) {
-            buf.writeInt(recipe.getIngredients().size());
-            for (Ingredient ing : recipe.getIngredients()) {
-                ing.toNetwork(buf);
-            }
-            buf.writeItemStack(recipe.getResultItem(null), false);
-        }
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
+        public StreamCodec<RegistryFriendlyByteBuf, CoffeePressRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

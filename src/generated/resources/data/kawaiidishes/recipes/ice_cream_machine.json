@@ -12,7 +12,7 @@
       "item": "minecraft:redstone"
     },
     "x": {
-      "tag": "forge:glass"
+      "tag": "c:glass_blocks"
     }
   },
   "pattern": [
@@ -21,7 +21,7 @@
     "iri"
   ],
   "result": {
-    "item": "kawaiidishes:ice_cream_machine"
+    "id": "kawaiidishes:ice_cream_machine"
   },
   "show_notification": true
 }

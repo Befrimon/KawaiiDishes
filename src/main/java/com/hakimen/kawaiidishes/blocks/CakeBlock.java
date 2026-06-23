@@ -1,11 +1,11 @@
 package com.hakimen.kawaiidishes.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,10 +31,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class CakeBlock extends Block {
 
     public static final IntegerProperty BITES = IntegerProperty.create("slices",1,4);
+    private static final MapCodec<CakeBlock> CODEC = simpleCodec(props -> new CakeBlock());
 
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
 
     public CakeBlock() {
-        super(Properties.copy(Blocks.CAKE).sound(SoundType.WOOL));
+        super(Properties.ofFullCopy(Blocks.CAKE).sound(SoundType.WOOL));
         this.registerDefaultState(this.stateDefinition.any().setValue(BITES, Integer.valueOf(4)));
     }
 
@@ -83,17 +88,15 @@ public class CakeBlock extends Block {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(BITES);
     }
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (pLevel.isClientSide) {
             if (eat(pLevel, pPos, pState, pPlayer).consumesAction()) {
                 pLevel.playSound(pPlayer, pPos, SoundEvents.GENERIC_EAT, SoundSource.BLOCKS);
                 return InteractionResult.SUCCESS;
             }
 
-            if (itemstack.isEmpty()) {
-                return InteractionResult.CONSUME;
-            }
+            return InteractionResult.CONSUME;
         }
 
         return eat(pLevel, pPos, pState, pPlayer);

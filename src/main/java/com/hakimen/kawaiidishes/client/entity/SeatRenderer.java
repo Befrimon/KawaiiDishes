@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SeatRenderer extends EntityRenderer<SittableEntity> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(KawaiiDishes.modId, "");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(KawaiiDishes.modId, "");
 
     public SeatRenderer(EntityRendererProvider.Context context) {
         super(context);

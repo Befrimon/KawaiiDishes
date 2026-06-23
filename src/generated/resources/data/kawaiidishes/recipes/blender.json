@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "g": {
-      "tag": "forge:glass_panes"
+      "tag": "c:glass_panes"
     },
     "r": {
       "item": "minecraft:redstone"
@@ -18,7 +18,7 @@
     "xrx"
   ],
   "result": {
-    "item": "kawaiidishes:blender"
+    "id": "kawaiidishes:blender"
   },
   "show_notification": true
 }

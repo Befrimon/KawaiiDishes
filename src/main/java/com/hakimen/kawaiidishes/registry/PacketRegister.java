@@ -1,56 +1,46 @@
 package com.hakimen.kawaiidishes.registry;
 
 import com.hakimen.kawaiidishes.KawaiiDishes;
+import com.hakimen.kawaiidishes.capabilities.PlayerTailWagCapability;
 import com.hakimen.kawaiidishes.networking.TailWagC2SPacket;
 import com.hakimen.kawaiidishes.networking.TailWagSyncS2CPacket;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 public class PacketRegister {
-    private static SimpleChannel INSTANCE;
-
-    private static int idPacket = 0;
-
-    private static int id(){
-        return idPacket++;
+    public static void register(IEventBus modEventBus) {
+        modEventBus.addListener(PacketRegister::onRegisterPayloads);
     }
 
-    public static void register(){
-        SimpleChannel net = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(KawaiiDishes.modId, "messages"))
-                .networkProtocolVersion(() -> "1.0")
-                .clientAcceptedVersions(s -> true)
-                .serverAcceptedVersions(s -> true)
-                .simpleChannel();
+    private static void onRegisterPayloads(RegisterPayloadHandlersEvent event) {
+        var registrar = event.registrar(KawaiiDishes.modId);
 
-        INSTANCE = net;
+        registrar.playToServer(
+                TailWagC2SPacket.TYPE,
+                TailWagC2SPacket.STREAM_CODEC,
+                (packet, context) -> {
+                    context.enqueueWork(() -> {
+                        var player = context.player();
+                        boolean current = PlayerTailWagCapability.getWagging(player.getUUID());
+                        PlayerTailWagCapability.setWagging(player.getUUID(), !current);
+                        sendToClients(new TailWagSyncS2CPacket(!current, player.getUUID()));
+                    });
+                }
+        );
 
-        net.messageBuilder(TailWagC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(TailWagC2SPacket::new)
-                .encoder(TailWagC2SPacket::toBytes)
-                .consumerMainThread(TailWagC2SPacket::handle)
-                .add();
-
-        net.messageBuilder(TailWagSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(TailWagSyncS2CPacket::new)
-                .encoder(TailWagSyncS2CPacket::toBytes)
-                .consumerMainThread(TailWagSyncS2CPacket::handle)
-                .add();
+        registrar.playToClient(
+                TailWagSyncS2CPacket.TYPE,
+                TailWagSyncS2CPacket.STREAM_CODEC,
+                (packet, context) -> {
+                    context.enqueueWork(() -> {
+                        com.hakimen.kawaiidishes.client.data.ClientTailWagData.setState(packet.uuid(), packet.isWagging());
+                    });
+                }
+        );
     }
 
-    public static <MSG> void sendToServer(MSG msg){
-        INSTANCE.sendToServer(msg);
-    }
-
-    public static <MSG> void sendToClient(MSG msg, ServerPlayer player){
-        INSTANCE.send(PacketDistributor.PLAYER.with(()-> player), msg);
-    }
-
-    public static <MSG> void sendToClients(MSG msg){
-        INSTANCE.send(PacketDistributor.ALL.noArg(), msg);
+    public static <MSG> void sendToClients(MSG msg) {
+        PacketDistributor.sendToAllPlayers((net.minecraft.network.protocol.common.custom.CustomPacketPayload) msg);
     }
 }

@@ -1,12 +1,12 @@
 package com.hakimen.kawaiidishes.registry;
 
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import com.hakimen.kawaiidishes.items.armor.ArmorMaterials;
+import net.neoforged.bus.api.IEventBus;
 
 public class Registration {
 
-    public static void init(){
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    public static void init(IEventBus bus) {
+        ArmorMaterials.register(bus);
         BlockRegister.register(bus);
         BlockEntityRegister.register(bus);
         ItemRegister.register(bus);
@@ -16,5 +16,4 @@ public class Registration {
         EntityRegister.register(bus);
         VillagerWorkRegister.register(bus);
     }
-
 }

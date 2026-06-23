@@ -6,7 +6,7 @@
       "item": "minecraft:white_wool"
     },
     "s": {
-      "tag": "forge:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "ss "
   ],
   "result": {
-    "item": "kawaiidishes:white_bunny_tail"
+    "id": "kawaiidishes:white_bunny_tail"
   },
   "show_notification": true
 }
